@@ -1,0 +1,133 @@
+body{
+
+    background:#f5f5f5;
+
+    font-family:Arial, Helvetica, sans-serif;
+
+}
+
+/*======================
+HEADER
+=======================*/
+
+.top-header{
+
+    background:black;
+
+    padding:15px 0;
+
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
+
+}
+
+.logo{
+
+    width:200px;
+
+}
+
+.header-right{
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    align-items:center;
+
+    gap:25px;
+
+}
+
+.header-right a{
+
+    color:white;
+
+    text-decoration:none;
+
+    font-size:15px;
+
+    transition:.3s;
+
+}
+
+.header-right a:hover{
+
+    color:#e5101d;
+
+}
+
+.header-right i{
+
+    margin-right:6px;
+
+}
+
+.form-control{
+
+    height:45px;
+
+}
+
+.btn-warning{
+
+    width:60px;
+
+}
+
+/*======================
+NAVBAR
+=======================*/
+
+.navbar{
+
+    padding:0;
+    background: white;
+
+}
+
+.navbar-nav .nav-link{
+
+    padding:15px 20px;
+
+    color:black !important;
+
+    font-weight:500;
+
+}
+
+.navbar-nav .nav-link:hover{
+
+    background:#e5101d;
+    color:white !important;
+
+}
+
+/*======================
+Responsive
+=======================*/
+
+@media(max-width:768px){
+
+    .logo{
+
+        display:block;
+
+        margin:auto;
+
+        margin-bottom:15px;
+
+    }
+
+    .header-right{
+
+        justify-content:center;
+
+        margin-top:15px;
+
+        gap:15px;
+
+        flex-wrap:wrap;
+
+    }
+
+}

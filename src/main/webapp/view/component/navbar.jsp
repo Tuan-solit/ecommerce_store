@@ -1,0 +1,56 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+    <title>Title</title>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark">
+
+    <div class="container">
+
+        <button class="navbar-toggler"
+                data-toggle="collapse"
+                data-target="#menu">
+
+            <span class="navbar-toggler-icon"></span>
+
+        </button>
+
+        <div class="collapse navbar-collapse"
+             id="menu">
+
+            <ul class="navbar-nav d-flex flex-row gap-4 ps-3">
+                <li class="nav-item">
+                    <a class="nav-link active" href="index.jsp">
+                        <i class="fas fa-home me-1"></i> Trang chủ
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="products">
+                        <i class="fas fa-box-open me-1"></i> Sản phẩm
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="hot-deals">
+                        <i class="fas fa-fire text-warning me-1"></i> Khuyến mãi
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="order-history">
+                        <i class="fas fa-history me-1"></i> Lịch sử đơn hàng
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="contact.jsp">
+                        <i class="fas fa-headset me-1"></i> Liên hệ
+                    </a>
+                </li>
+            </ul>
+
+        </div>
+
+    </div>
+
+</nav>
+</body>
+</html>
