@@ -56,16 +56,10 @@
 
                 <div class="header-right">
 
-                    <a href="#">
-                        <i class="fas fa-user"></i>
-                        Đăng nhập
-                    </a>
+                    <!-- Account -->
+                    <jsp:include page="/view/component/account.jsp"/>
 
-                    <a href="#">
-                        <i class="fas fa-user-plus"></i>
-                        Đăng ký
-                    </a>
-
+                    <!-- Cart -->
                     <a href="#">
                         <i class="fas fa-shopping-cart"></i>
                         Giỏ hàng
