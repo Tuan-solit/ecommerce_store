@@ -7,6 +7,30 @@
 <body>
 <c:import url="component/header.jsp"/>
 <c:import url="component/navbar.jsp"/>
-<c:import url="component/sidebar.jsp"/>
+<div class="container">
+
+    <div class="row">
+
+        <div class="col-lg-3">
+
+            <c:import url="component/sidebar.jsp"/>
+        </div>
+
+        <div class="col-lg-9">
+
+            <c:import url="component/banner.jsp"/>
+
+        </div>
+
+    </div>
+
+<div class="row">
+    <c:import url="component/product-card.jsp"/>
+    <c:import url="component/product-card.jsp"/>
+    <c:import url="component/product-card.jsp"/>
+    <c:import url="component/product-card.jsp"/>
+</div>
+</div>
+<c:import url="component/footer.jsp"/>
 </body>
 </html>

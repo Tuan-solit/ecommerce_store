@@ -10,14 +10,14 @@
     <c:import url="/view/layout/library.jsp"/>
 </head>
 <body>
-<%--<%--%>
-<%--    ICategoryService categoryService = new CategoryService();--%>
-<%--    List<Category> categoryList = categoryService.getCategoryList();--%>
-<%--    pageContext.setAttribute("categoryList", categoryList);--%>
-<%--%>--%>
+<%
+    ICategoryService categoryService = new CategoryService();
+    List<Category> categoryList = categoryService.getCategoryList();
+    request.setAttribute("categoryList", categoryList);
+%>
 <div class="card sidebar-card">
 
-    <div class="card-header bg-primary text-white">
+    <div class="card-header text-white" style="background: #e5101d">
         <i class="fas fa-list"></i>
         DANH MỤC SẢN PHẨM
     </div>
