@@ -13,6 +13,8 @@ import java.util.List;
 
 public class ProductRepository implements IProductRepository {
 
+    // ===================== USER =====================
+
     private static final String FIND_ALL = """
             SELECT p.*,
                    c.category_name,
@@ -46,8 +48,36 @@ public class ProductRepository implements IProductRepository {
             ORDER BY p.created_at DESC
             """;
 
+    // ===================== ADMIN =====================
+
+    private static final String SELECT_ALL = """
+            SELECT p.*,
+                   c.category_name,
+                   c.category_icon
+            FROM products p
+            INNER JOIN categories c
+            ON p.category_id = c.category_id
+            ORDER BY p.created_at DESC
+            """;
+
+    private static final String SELECT_ALL_RANDOM = """
+            SELECT p.*,
+                   c.category_name,
+                   c.category_icon
+            FROM products p
+            INNER JOIN categories c
+            ON p.category_id = c.category_id
+            WHERE p.is_active = true
+            ORDER BY RAND()
+            """;
+
+    // =====================================================
+    // USER
+    // =====================================================
+
     @Override
     public List<Product> findAll() {
+
         List<Product> products = new ArrayList<>();
 
         try (Connection connection = DBConnection.getDBConnection();
@@ -57,48 +87,108 @@ public class ProductRepository implements IProductRepository {
             while (resultSet.next()) {
                 products.add(getProduct(resultSet));
             }
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return products;
-    }
 
-    @Override
-    public List<Product> search(String keyword) {
-        List<Product> products = new ArrayList<>();
-
-        try (Connection connection = DBConnection.getDBConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SEARCH);) {
-
-            preparedStatement.setString(1, "%" + keyword + "%");
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()) {
-                products.add(getProduct(resultSet));
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
         return products;
     }
 
     @Override
     public Product findById(int id) {
+
         try (Connection connection = DBConnection.getDBConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_ID);) {
+             PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_ID)) {
 
             preparedStatement.setInt(1, id);
+
             ResultSet resultSet = preparedStatement.executeQuery();
+
             if (resultSet.next()) {
                 return getProduct(resultSet);
             }
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+
         return null;
     }
 
+    @Override
+    public List<Product> search(String keyword) {
+
+        List<Product> products = new ArrayList<>();
+
+        try (Connection connection = DBConnection.getDBConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SEARCH)) {
+
+            preparedStatement.setString(1, "%" + keyword + "%");
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                products.add(getProduct(resultSet));
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return products;
+    }
+
+    // =====================================================
+    // ADMIN
+    // =====================================================
+
+    @Override
+    public List<Product> getProductList() {
+
+        List<Product> productList = new ArrayList<>();
+
+        try (Connection connection = DBConnection.getDBConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+
+            while (resultSet.next()) {
+                productList.add(getProduct(resultSet));
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return productList;
+    }
+
+    @Override
+    public List<Product> getProductRandomList() {
+
+        List<Product> productList = new ArrayList<>();
+
+        try (Connection connection = DBConnection.getDBConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_RANDOM);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+
+            while (resultSet.next()) {
+                productList.add(getProduct(resultSet));
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return productList;
+    }
+
+    // =====================================================
+    // DÙNG CHUNG
+    // =====================================================
+
     private Product getProduct(ResultSet resultSet) throws SQLException {
+
         Product product = new Product();
 
         product.setId(resultSet.getInt("product_id"));
