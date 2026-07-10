@@ -39,31 +39,49 @@
                                name="fullName"
                                placeholder="Họ và tên"
                                value="${fullName}">
+                        <small class="text-danger">
+                            ${fullNameError}
+                        </small>
 
                         <input class="form-control mb-3"
                                name="username"
                                placeholder="Tên đăng nhập"
                                value="${username}">
+                        <small class="text-danger">
+                            ${usernameError}
+                        </small>
 
                         <input class="form-control mb-3"
                                name="email"
                                placeholder="Email"
                                value="${email}">
+                        <small class="text-danger">
+                            ${emailError}
+                        </small>
 
                         <input class="form-control mb-3"
                                name="phone"
                                placeholder="Số điện thoại"
                                value="${phone}">
+                        <small class="text-danger">
+                            ${phoneError}
+                        </small>
 
                         <input class="form-control mb-3"
                                type="password"
                                name="password"
                                placeholder="Mật khẩu">
+                        <small class="text-danger">
+                            ${passwordError}
+                        </small>
 
                         <input class="form-control mb-3"
                                type="password"
                                name="confirmPassword"
                                placeholder="Nhập lại mật khẩu">
+                        <small class="text-danger">
+                            ${confirmPasswordError}
+                        </small>
 
                         <button class="btn btn-primary w-100">
 
@@ -77,7 +95,7 @@
 
                     <span style="color:red">
 
-                        ${message}
+                        ${registerError}
 
                     </span>
 

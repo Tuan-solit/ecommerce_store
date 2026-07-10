@@ -32,5 +32,48 @@
 </div>
 </div>
 <c:import url="component/footer.jsp"/>
+
+<c:if test="${not empty successMessage}">
+
+    <div class="toast-container position-fixed top-0 end-0 p-3">
+
+        <div id="loginToast"
+             class="toast text-bg-success border-0">
+
+            <div class="d-flex">
+
+                <div class="toast-body">
+
+                        ${successMessage}
+
+                </div>
+
+                <button class="btn-close btn-close-white me-2 m-auto"
+                        data-bs-dismiss="toast">
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const toast = new bootstrap.Toast(
+                document.getElementById("loginToast"),
+                {
+                    delay:3000
+                });
+
+            toast.show();
+
+        });
+
+    </script>
+
+</c:if>
 </body>
 </html>
