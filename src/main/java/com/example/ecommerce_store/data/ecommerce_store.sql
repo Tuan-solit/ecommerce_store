@@ -2,101 +2,103 @@ create database if not exists ecommerce_db;
 use ecommerce_db;
 
 create table users (
-                       user_id int auto_increment primary key,
-                       username varchar(50) not null unique,
-                       password varchar(255) not null,
-                       full_name varchar(100),
-                       email varchar(100) unique,
-                       phone varchar(20),
-                       role varchar(20) default 'user'
+    user_id int auto_increment primary key,
+    username varchar(50) not null unique,
+    password varchar(255) not null,
+    full_name varchar(100),
+    email varchar(100) unique,
+    phone varchar(20),
+    role varchar(20) default 'user'
 );
 
 create table categories (
-                            category_id int auto_increment primary key,
-                            category_name varchar(100) not null,
-                            category_icon varchar(200)
+    category_id int auto_increment primary key,
+    category_name varchar(100) not null,
+    category_icon varchar(200)
 );
 
 
 create table products (
-                          product_id int auto_increment primary key,
-                          product_code varchar(10) unique,
-                          product_name varchar(255) not null,
-                          category_id int,
-                          price decimal(10, 2) not null,
-                          quantity int default 0,
-                          description text,
-                          image varchar(255),
-                          created_at timestamp default current_timestamp,
-                          is_active boolean default true,
-                          foreign key (category_id) references categories(category_id) on delete set null
+    product_id int auto_increment primary key,
+    product_code varchar(10) unique,
+    product_name varchar(255) not null,
+    category_id int,
+    price decimal(10, 2) not null,
+    quantity int default 0,
+    description text,
+    image varchar(255),
+    created_at timestamp default current_timestamp,
+    is_active boolean default true,
+    foreign key (category_id) references categories(category_id) on delete set null
 );
 
 create table orders (
-                        order_id int auto_increment primary key,
-                        user_id int,
-                        order_date timestamp default current_timestamp,
-                        total_amount decimal(10, 2) not null,
-                        status varchar(50) default 'pending',
-                        foreign key (user_id) references users(user_id) on delete set null
+    order_id int auto_increment primary key,
+    user_id int,
+    order_date timestamp default current_timestamp,
+    total_amount decimal(10, 2) not null,
+    status varchar(50) default 'pending',
+    foreign key (user_id) references users(user_id) on delete set null
 );
 
 create table order_details (
-                               detail_id int auto_increment primary key,
-                               order_id int not null,
-                               product_id int not null,
-                               price decimal(10, 2) not null,
-                               quantity int not null,
-                               subtotal decimal(10, 2) not null,
-                               foreign key (order_id) references orders(order_id) on delete cascade,
-                               foreign key (product_id) references products(product_id) on delete restrict
+    detail_id int auto_increment primary key,
+    order_id int not null,
+    product_id int not null,
+    price decimal(10, 2) not null,
+    quantity int not null,
+    subtotal decimal(10, 2) not null,
+    foreign key (order_id) references orders(order_id) on delete cascade,
+    foreign key (product_id) references products(product_id) on delete restrict
 );
 
 -- insert data
-insert into categories (category_name,category_icon) values
-                                                         ('Điện thoại', 'fas fa-mobile-alt'),
-                                                         ('Laptop', 'fas fa-laptop'),
-                                                         ('Tai nghe & Loa', 'fas fa-headphones'),
-                                                         ('Chuột & Bàn phím', 'fas fa-keyboard');
+insert into categories (category_name,category_icon) values 
+('Điện thoại', 'fas fa-mobile-alt'),
+('Laptop', 'fas fa-laptop'),
+('Tai nghe & Loa', 'fas fa-headphones'),
+('Chuột & Bàn phím', 'fas fa-keyboard');
 
--- insert into products (product_id, product_code, product_name, category_id, price, quantity, description, image, is_active) values
--- (1, 'IP15PM', 'iPhone 15 Pro Max 256GB', 1, 29500000.00, 15, 'Điện thoại Apple cao cấp nhất', 'iphone15.jpg', 1),
--- (2, 'SS24U', 'Samsung Galaxy S24 Ultra', 1, 26000000.00, 10, 'Flagship đỉnh cao của Samsung', 's24ultra.jpg', 1),
--- (3, 'OPPOX7', 'Oppo Find X7 Ultra', 1, 19500000.00, 8, 'Camera zoom tàu ngầm siêu khủng', 'oppox7.jpg', 1),
--- (4, 'XIA14U', 'Xiaomi 14 Ultra ống kính Leica', 1, 22500000.00, 12, 'Đỉnh cao nhiếp ảnh di động', 'xiaomi14.jpg', 1),
--- (5, 'IP14PM', 'iPhone 14 Pro Max 128GB', 1, 21000000.00, 5, 'Máy cũ đẹp keng xà beng', 'iphone14.jpg', 1),
--- (6, 'SSRE5G', 'Samsung Galaxy A55 5G', 1, 9500000.00, 20, 'Điện thoại tầm trung bán chạy', 'samsunga55.jpg', 1),
--- (7, 'REDNOTE', 'Redmi Note 15 6G 128G', 1, 5500000.00, 30, 'Cấu hình ngon bổ rẻ cho sinh viên', 'redmi13.jpg', 1),
--- (8, 'VIVV30', 'Vivo V30 5G Aura Light', 1, 11000000.00, 7, 'Chuyên gia chụp ảnh chân dung', 'vivo...jpg', 1),
--- (9, 'ROGP8', 'ASUS ROG Phone 8', 1, 24000000.00, 6, 'Quái vật gaming cho game thủ', 'rog8.jpg', 1),
--- (10, 'REAC12', 'Realme C65 giá rẻ', 1, 3500000.00, 40, 'Pin trâu sóng khỏe máy mượt', 'realme.jpg', 1),
--- (11, 'MACM3', 'MacBook Air M5 13 inch 2026', 2, 35490000.00, 8, 'Laptop mỏng nhẹ, hiệu năng cao', 'macbookm3.jpg', 1),
--- (12, 'ASUSTF', 'ASUS TUF Gaming A15', 2, 21500000.00, 11, 'Laptop gaming quốc dân bền bỉ', 'asustuf.jpg', 1),
--- (13, 'DELLVO', 'Dell Vostro 14 3430 Core i5', 2, 14000000.00, 15, 'Laptop văn phòng gọn nhẹ lịch lãm', 'dell3430.jpg', 1),
--- (14, 'HPPAVI', 'HP Pavilion 14 X360', 2, 16500000.00, 9, 'Màn hình cảm ứng xoay gập 360 độ', 'hppavilion.jpg', 1),
--- (15, 'LENTHI', 'Lenovo ThinkPad E14 Gen 5', 2, 18900000.00, 6, 'Bàn phím gõ sướng, siêu bền', 'thinkpad.jpg', 1),
--- (16, 'ACERNI', 'Acer Nitro V 15', 2, 19900000.00, 14, 'Tản nhiệt mát mẻ chiến game mượt', 'acernitro.jpg', 1),
--- (17, 'MSICYG', 'MSI Cyborg 15 B13WEKG-676VN', 2, 37490000.00, 10, 'Thiết kế bán trong suốt đậm chất cyber', 'msicyborg.jpg', 1),
--- (18, 'GIGAG5', 'Gigabyte G5 Gaming Laptop', 2, 16800000.00, 13, 'Cấu hình cao giá tốt phân khúc', 'gigag5.jpg', 1),
--- (19, 'MACPRO', 'MacBook Pro 14 M3 Pro', 2, 45000000.00, 4, 'Vũ khí tối thượng cho coder và đồ họa', 'macpro.jpg', 1),
--- (20, 'ASUSZE', 'ASUS Zenbook 14 OLED', 2, 23000000.00, 7, 'Màn hình OLED siêu đẹp rực rỡ', 'zenbook.jpg', 1),
--- (21, 'APPRO2', 'AirPods Pro 3 2025 Type-C', 3, 5500000.00, 30, 'AirPods Pro 3 chính thức ra mắt tháng 9/2025, đánh dấu bước ngoặt lớn của Apple trong phân khúc tai nghe True Wireless. Sản phẩm nổi bật với công nghệ chống ồn chủ động (ANC) mạnh gấp 2 lần so với AirPods Pro 2, đi kèm thiết kế công thái học gọn nhẹ giúp tăng cường trải nghiệm đeo. Đặc biệt, việc tích hợp cảm biến đo nhịp tim lần đầu tiên trên tai nghe biến thiết bị thành một trợ lý sức khỏe thông minh, hỗ trợ theo dõi chỉ số cơ thể thời gian thực một cách chính xác.', 'airpods.jpg', 1),
--- (22, 'SONWH1', 'Sony WH-1000XM6 Premium', 3, 6900000.00, 10, 'Tai nghe chụp tai chống ồn tốt nhất', 'sony_wh.jpg', 1),
--- (23, 'MARCH4', 'Loa Bluetooth Marshall Acton III', 3, 3600000.00, 15, 'Pin trâu 80 tiếng, thiết kế hoài cổ', 'marshall4.jpg', 1),
--- (24, 'JBLCH5', 'Loa Bluetooth JBL Charge 5', 3, 3400000.00, 25, 'Chống nước IP67, âm bass mạnh mẽ', 'jbl_charge5.jpg', 1),
--- (25, 'ANKS30', 'Soundcore Space One Pro (A3062)', 3, 4600000.00, 40, 'Tai nghe ngon bổ rẻ chống ồn tốt', 'anker_a40.jpg', 1),
--- (26, 'SONWF1', 'Tai nghe Bluetooth True Wireless Sony WF C500', 3, 1200000.00, 50, 'Nhiều màu sắc, âm thanh trong trẻo', 'sony_c500.jpg', 1),
--- (27, 'MARGO3', 'Loa Bluetooth Marshall Willen II', 3, 2500000.00, 18, 'Loa di động bỏ túi âm thanh chất', 'willen.jpg', 1),
--- (28, 'JBLGO4', 'Loa Bluetooth JBL Go 4', 3, 950000.00, 60, 'Nhỏ gọn treo balo đi du lịch', 'jbl_go4.jpg', 1),
--- (29, 'HAGAM1', 'Tai nghe Gaming Havit H2002d', 3, 450000.00, 100, 'Tai nghe gaming chụp tai mic rõ ràng', 'havit.jpg', 1),
--- (30, 'APOD3', 'Apple AirPods 3 Chính Hãng', 3, 4200000.00, 22, 'Thiết kế công thái học đeo thoải mái', 'airpods3.jpg', 1),
--- (31, 'LOGIGPRO', 'Chuột Logitech G Pro X Superlight', 4, 3200000.00, 12, 'Chuột gaming siêu nhẹ dành cho game thủ', 'logigpro.jpg', 1),
--- (32, 'AK75W', 'Bàn phím cơ Aula F75', 4, 1500000.00, 20, 'Bàn phím cơ gõ êm, kết nối 3 chế độ', 'aulaf75.jpg', 1),
--- (33, 'LOGIMX', 'Chuột Logitech MX Master 3S', 4, 2400000.00, 15, 'Vua chuột văn phòng, chống đau cổ tay', 'mx3s.jpg', 1),
--- (34, 'RAZDAV', 'Chuột Razer DeathAdder V3 Pro', 4, 3100000.00, 8, 'Chuột gaming form ôm tay cực đỉnh', 'razer_v3.jpg', 1),
--- (35, 'KEYK2V', 'Bàn phím cơ Keychron K2 V2', 4, 1850000.00, 14, 'Phù hợp hoàn hảo cho cả Mac và Windows', 'keychron_k2.jpg', 1),
--- (36, 'FUHLE9', 'Bàn phím cơ Fuhlen Eraser', 4, 750000.00, 35, 'Bàn phím cơ giá rẻ bất tử phòng net', 'fuhlen.jpg', 1),
--- (37, 'LOGIK1', 'Bộ phím chuột Logitech MK240', 4, 450000.00, 50, 'Bộ phím chuột không dây nhỏ gọn tiện lợi', 'mk240.jpg', 1),
--- (38, 'NEWMG1', 'Chuột Newmen G10 Huyền Thoại', 4, 150000.00, 200, 'Chuột gaming quốc dân siêu rẻ bền', 'newmen_g10.jpg', 1),
--- (39, 'DAREK4', 'Bàn phím DareU EK87', 4, 550000.00, 80, 'Bàn phím cơ TKL gọn gàng cho học sinh', 'dareu_ek87.jpg', 1),
--- (40, 'AKKO30', 'Bàn phím cơ Akko 3075B Plus', 4, 1950000.00, 10, 'Thiết kế đẹp, keycap siêu bền cá tính', 'akko3075.jpg', 1);
+insert into products (product_id, product_code, product_name, category_id, price, quantity, description, image, is_active) values
+(1, 'IP15PM', 'iPhone 15 Pro Max 256GB', 1, 29500000.00, 15, 'iPhone 15 Pro Max 256GB chính hãng, giá rẻ là mẫu smartphone cao cấp nhất dòng iPhone 15 series được Apple ra mắt năm 2023, nổi bật với khung titan bền nhẹ, chipset A17 Pro 3nm mạnh mẽ, cổng USB-C và camera zoom quang học 5x. Đây là thiết bị hàng đầu về hiệu năng, camera và công nghệ hiển thị thời điểm hiện tại.', '/view/images/iphone-15-pro-max.png', 1),
+(2, 'SS24U', 'Samsung Galaxy S24 Ultra', 1, 26000000.00, 10, 'Samsung Galaxy S24 Ultra sở hữu AI thông minh, hiệu năng cực đỉnh cũng đa tính năng cao cấp nhất. Đi kèm với đó là những cải tiến tích cực vượt trội hơn về camera, vi xử lý, và tích hợp AI toàn diện, đây là sản phẩm không thể bỏ qua cho người yêu công nghệ. Cùng xem giá bán và đánh giá chi tiết nhất dòng điện thoại này xem có nên mua không ngay nhé!', '/view/images/samsung-galaxy-s24-ultra.png', 1),
+(3, 'OPPOX7', 'Oppo Find X7 Ultra', 1, 19500000.00, 10, ' OPPO Find X7 có hiệu năng cực đỉnh, được trang bị chip Dimensity 9300, điểm AnTuTu V10 khoảng 2 triệu điểm và màn hình cong kích thước lớn cực kỳ sắc nét. Thiết bị còn sở hữu hệ thống camera chất lượng cao, chụp ảnh, quay phim tuyệt hảo cùng sặc siêu nhanh 100W.', '/view/images/oppo_find_x7.jpg', 1),
+(4, 'XIA14U', 'Xiaomi 14 Ultra ống kính Leica', 1, 22500000.00, 12, 'Xiaomi 14 Ultra 5G  là dòng điện thoại Xiaomi cao cấp sở hữu một cấu hình vượt trội với Snapdragon 8 Gen 3 cùng RAM 16GB ấn tượng. Điện thoại được Xiaomi trang bị cụm bốn camera sau 50MP chất lượng, tối ưu cho các trải nghiệm nhiếp ảnh. Máy với hệ thống tản nhiệt IceLoop giúp tối ưu hiệu năng dùng cũng như viên pin 5000mAh cùng công nghệ Xiaomi Surge.', '/view/images/xiaomi-14-ultra.jpg', 1),
+(5, 'IP14PM', 'iPhone 14 Pro Max 128GB', 1, 21000000.00, 5, 'iPhone 14 Pro Max sở hữu chip xử lý A16 Bionic mạnh mẽ, bộ nhớ trong đa dạng từ 128GB, 256GB, 512GB đến 1TB, đi cùng màn hình 6.7 inch Super Retina XDR. Máy còn được trang bị camera chính 48MP cùng nhiều tính năng chụp ảnh chuyên nghiệp. Ngoài ra, thiết kế tinh tế với các màu sắc thời trang cũng giúp người dùng dễ lựa chọn. ', '/view/images/iphone-14-promax.png', 1),
+(6, 'SSRE5G', 'Samsung Galaxy A55 5G', 1, 9500000.00, 20, 'Samsung Galaxy A55 thiết kế sang trọng, hiện đại với màn hình rộng 6.6 inch, tấm nền Super AMOLED cùng độ phân giải Full HD+ cho hình ảnh hiển thị mượt mà, sắc nét. Sở hữu con chip Exynos 1480, cùng tần số quét 120Hz cho trải nghiệm sử dụng không bị giật, lag.', '/view/images/ss_galaxy_a55.png', 1),
+(7, 'REDNOTE', 'Redmi Note 15 6G 128G', 1, 5500000.00, 30, 'Redmi Note 15 6GB/128GB trang bị chip Helio G100 Ultra 8 nhân, chạy hệ điều hành Xiaomi HyperOS 2 cho trải nghiệm mượt mà khi sử dụng. Màn hình AMOLED 6.77 inch 120Hz mang lại cảm giác cuộn chạm đã mắt, cùng pin dung lượng "khủng" 6.000mAh, sạc nhanh 33W và camera chính 108MP chụp ảnh sắc nét. Tất cả tạo nên một thiết bị sẵn sàng đáp ứng trọn vẹn nhu cầu học tập, làm việc và giải trí mỗi ngày.', '/view/images/redmi-note-15.jpg', 1),
+(8, 'VIVV30', 'Vivo V30 5G Aura Light', 1, 11000000.00, 7, 'Vivo V30 Pro được ra mắt người dùng với kích thước màn hình 6.78 inch được bao phủ bởi tấm nền AMOLED, độ sáng tối đa 2800 nits và tần số quét 120Hz. Bên trong máy là con chip Dimensity 8200 với thanh RAM 12GB và bộ nhớ 512GB. Mặt sau của máy là hệ thống 3 camera với cùng độ phân giải 50MP và mặt trước là ống kính 50MP. ', '/view/images/dien-thoai-vivo-v30-5g.jpg', 1),
+(9, 'ROGP8', 'ASUS ROG Phone 8', 1, 24000000.00, 6, 'Asus ROG Phone 8 sở hữu màn hình LTPO AMOLED kích thước 6.78 inch, tần số quét 165Hz mượt mà cùng độ sáng tối đa lên tới 2500 nits. Máy được trang bị bộ vi xử lý Snapdragon 8 Gen 3 mạnh mẽ bậc nhất, đi kèm thanh RAM 12GB và bộ nhớ trong UFS 4.0 256GB. Mặt sau là cụm camera 3 ống kính 50MP (hỗ trợ chống rung Gimbal OIS), camera tele 32MP và góc siêu rộng 13MP, kết hợp pin 5500mAh hỗ trợ sạc nhanh 65W.', '/view/images/asus-rog-phone-8_1.jpg', 1),
+(10, 'REAC12', 'Realme C65 giá rẻ', 1, 3500000.00, 40, 'Realme C65 được trang bị màn hình IPS LCD kích thước lớn 6.67 inch với tần số quét 90Hz bảo vệ mắt tối ưu. Sức mạnh của máy đến từ con chip xử lý MediaTek Helio G85 ổn định kết hợp cùng dung lượng RAM 8GB và bộ nhớ trong 256GB thoải mái lưu trữ. Hệ thống camera sau AI có độ phân giải lên đến 50MP sắc nét và camera trước 8MP. Máy sở hữu viên pin dung lượng lớn 5000mAh tích hợp công nghệ sạc nhanh SuperVOOC công suất 45W.', '/view/images/dien-thoai-realme-c65.jpg', 1),
+(11, 'MACM3', 'MacBook Air M5 13 inch 2026', 2, 35490000.00, 38, 'MacBook Air thế hệ mới sở hữu màn hình Liquid Retina kích thước 13.6 inch sắc nét với công nghệ hiển thị True Tone cao cấp. Bên trong là sức mạnh xử lý vượt trội từ con chip Apple Silicon thế hệ mới nhất với cấu trúc 8 nhân CPU và tối đa 10 nhân GPU mạnh mẽ. Máy đi kèm với dung lượng bộ nhớ RAM 16GB đa nhiệm mượt mà, ổ cứng SSD 512GB tốc độ cao, thiết kế vỏ nhôm nguyên khối siêu mỏng nhẹ chỉ 1.24kg và cổng sạc nam châm MagSafe 3 tiện lợi.', '/view/images/macbook_air_m5.jpg', 1),
+(12, 'ASUSTF', 'ASUS TUF Gaming A15', 2, 21500000.00, 21, 'ASUS TUF Gaming A15 sở hữu màn hình kích thước 15.6 inch độ phân giải Full HD sử dụng tấm nền IPS cao cấp chống chói, tần số quét cao 144Hz chuyên game. Laptop được trang bị bộ vi xử lý AMD Ryzen 7 hiệu năng cao kết hợp cùng card đồ họa rời NVIDIA GeForce RTX chuyên dụng cho gaming. Máy đi kèm RAM 8GB DDR5 thế hệ mới, ổ cứng SSD 512GB siêu tốc, hệ thống tản nhiệt quạt kép Arc Flow bền bỉ chuẩn độ bền quân đội MIL-STD-810H.', '/view/images/asus_tuf_a15.jpg', 1),
+(13, 'DELLVO', 'Dell Vostro 14 3430 Core i5', 2, 14000000.00, 25, 'Dell Vostro 14 sở hữu màn hình nhỏ gọn kích thước 14 inch độ phân giải Full HD sắc nét cùng công nghệ chống chói bảo vệ mắt khi làm việc lâu. Máy được trang bị cấu hình văn phòng mạnh mẽ với bộ vi xử lý Intel Core i5 thế hệ mới hiệu năng ổn định, đi kèm bộ nhớ RAM 8GB đa nhiệm và ổ cứng lưu trữ SSD dung lượng 512GB. Thiết kế máy mỏng nhẹ lịch lãm, trang bị đầy đủ các cổng kết nối thông dụng giúp tối ưu hiệu suất công việc văn phòng.', '/view/images/laptop-dell-vostro-14-3430.png', 1),
+(14, 'HPPAVI', 'HP Pavilion 14 X360', 2, 16500000.00, 39, 'HP Pavilion 14 X360 nổi bật với thiết kế màn hình cảm ứng kích thước 14 inch Full HD sử dụng tấm nền IPS cho góc nhìn rộng, có khả năng xoay gập linh hoạt 360 độ độc đáo. Chiếc laptop được trang bị bộ vi xử lý Intel Core thế hệ mới cân mượt mọi tác vụ học tập, làm việc kết hợp với thanh RAM 8GB và ổ cứng SSD 512GB tốc độ cao. Máy hỗ trợ bút cảm ứng tiện lợi, âm thanh tinh chỉnh bởi B&O cao cấp và bảo mật vân tay một chạm.', '/view/images/hp_pavilion_14.png', 1),
+(15, 'LENTHI', 'Lenovo ThinkPad E14 Gen 5', 2, 18900000.00, 36, 'Lenovo ThinkPad E14 Gen 5 sở hữu màn hình tỷ lệ vàng 16:10 kích thước 14 inch sắc nét, tấm nền chống chói độ sáng cao. Máy mang trong mình cấu hình đáng tin cậy với bộ vi xử lý Intel Core thế hệ mới nhất, dung lượng RAM 8GB và bộ nhớ SSD 512GB tốc độ phản hồi nhanh. Laptop nổi tiếng với thiết kế siêu bền bỉ đạt chuẩn quân đội, bàn phím gõ êm ái hàng đầu thế giới tích hợp nút TrackPoint đỏ đặc trưng mang lại trải nghiệm chuyên nghiệp.', '/view/images/thinkpad_e14_g5.png', 1),
+(16, 'ACERNI', 'Acer Nitro V 15', 2, 19900000.00, 24, 'Acer Nitro V 15 sở hữu màn hình chuyên game kích thước 15.6 inch Full HD sử dụng tấm nền IPS cho góc nhìn rộng, tần số quét cao 144Hz mượt mà hạn chế xé hình. Cấu hình phần cứng mạnh mẽ gồm vi xử lý Intel Core dòng H hiệu năng cao phối hợp cùng card đồ họa rời đồ sộ NVIDIA GeForce RTX giúp chiến tốt các tựa game AAA. Máy đi kèm bộ nhớ RAM 8GB DDR5, ổ cứng lưu trữ SSD 512GB tốc độ cao cùng hệ thống tản nhiệt hai quạt mát mẻ.', '/view/images/acer_nitro_v.jpg', 1),
+(17, 'MSICYG', 'MSI Cyborg 15 B13WEKG-676VN', 2, 37490000.00, 40, 'MSI Cyborg 15 sở hữu phong cách thiết kế đậm chất tương lai với các phần vỏ nhựa bán trong suốt Cyberpunk độc đáo, màn hình kích thước 15.6 inch IPS Full HD tần số quét cao 144Hz mượt mà. Bên trong máy là cấu hình khủng với bộ vi xử lý Intel Core i7 thế hệ 13 dòng H hiệu năng cao, card đồ họa rời NVIDIA GeForce RTX series 40 cực mạnh. Thiết bị trang bị sẵn bộ nhớ RAM 16GB DDR5 tốc độ cao và ổ cứng SSD NVMe PCIe dung lượng 1TB.', '/view/images/msi_cyborg.jpg', 1),
+(18, 'GIGAG5', 'Gigabyte G5 Gaming Laptop', 2, 16800000.00, 33, 'Gigabyte G5 Gaming sở hữu kích thước màn hình lớn 15.6 inch độ phân giải Full HD kết hợp cùng tấm nền IPS sắc nét có tần số quét cao 144Hz mượt mà cho game thủ. Trái tim của máy là bộ vi xử lý Intel Core thế hệ mới mạnh mẽ kết hợp hoàn hảo cùng card đồ họa rời NVIDIA GeForce RTX đồ họa đỉnh cao. Thiết bị tích hợp sẵn thanh RAM dung lượng 8GB, ổ cứng lưu trữ siêu tốc SSD 512GB cùng hệ thống tản nhiệt độc quyền Windforce hiệu quả.', '/view/images/gigabyte.png', 1),
+(19, 'MACPRO', 'MacBook Pro 14 M3 Pro', 2, 45000000.00, 24, 'MacBook Pro 14 inch sở hữu màn hình cao cấp Liquid Retina XDR độ sáng tối đa 1600 nits cùng công nghệ ProMotion tần số quét tự động 120Hz siêu mịn. Máy được trang bị cấu hình khủng từ con chip Apple M3 Pro cấu trúc CPU 11 nhân và GPU 14 nhân chuyên nghiệp cho xử lý đồ họa nặng. Máy sở hữu bộ nhớ thống nhất RAM 18GB đa nhiệm cực đỉnh, ổ cứng SSD 512GB tốc độ đọc ghi cực cao, cổng HDMI, khe thẻ nhớ SDXC và thời lượng pin ấn tượng lên tới 18 tiếng.', '/view/images/macbook_pro_14_in_m3.jpg', 1),
+(20, 'ASUSZE', 'ASUS Zenbook 14 OLED', 2, 23000000.00, 47, 'ASUS Zenbook 14 sở hữu màn hình cao cấp công nghệ ASUS Lumina OLED kích thước 14 inch độ phân giải cao lên đến 3K, tần số quét mượt mà 120Hz với màu sắc chuẩn đồ họa chuyên nghiệp. Máy mang trong mình vi xử lý tích hợp trí tuệ nhân tạo AI Intel Core Ultra mỏng nhẹ tiết kiệm pin, đi kèm bộ nhớ RAM lớn 16GB LPDDR5X và ổ cứng siêu tốc SSD 1TB. Thiết kế vỏ nhôm cao cấp mỏng nhẹ chỉ 1.2kg và viên pin dung lượng lớn bền bỉ.', '/view/images/asus_zenbook_14.png', 1),
+(21, 'APPRO2', 'AirPods Pro 3 2025 Type-C', 3, 5500000.00, 30, 'AirPods Pro 3 chính thức ra mắt tháng 9/2025, đánh dấu bước ngoặt lớn của Apple trong phân khúc tai nghe True Wireless. Sản phẩm nổi bật với công nghệ chống ồn chủ động (ANC) mạnh gấp 2 lần so với AirPods Pro 2, đi kèm thiết kế công thái học gọn nhẹ giúp tăng cường trải nghiệm đeo. Đặc biệt, việc tích hợp cảm biến đo nhịp tim lần đầu tiên trên tai nghe biến thiết bị thành một trợ lý sức khỏe thông minh, hỗ trợ theo dõi chỉ số cơ thể thời gian thực một cách chính xác.', '/view/images/airpods_pro_3.jpg', 1),
+(22, 'SONWH1', 'Sony WH-1000XM6 Premium', 3, 6900000.00, 30, 'Sony WH-1000XM6 Premium là dòng tai nghe không dây trùm đầu (Over-ear) cao cấp nhất sở hữu bộ vi xử lý chống ồn kép độc quyền mang lại khả năng cách âm tuyệt đối. Tai nghe tích hợp driver định âm kích thước lớn cho chất âm trung thực tinh tế, hỗ trợ định dạng âm thanh độ phân giải cao Hi-Res Audio không dây LDAC. Thời lượng pin của thiết bị vượt trội lên đến 40 giờ sử dụng liên tục khi bật chống ồn và hỗ trợ sạc nhanh Type-C tiện lợi.', '/view/images/sony-wh-1000xm6.jpg', 1),
+(23, 'MARCH4', 'Loa Bluetooth Marshall Acton III', 3, 3600000.00, 52, 'Marshall Acton III là mẫu loa bluetooth đặt bàn cao cấp sở hữu phong cách thiết kế retro vintage hoài cổ với lớp vỏ bọc da sang trọng cùng các phím điều khiển cơ học bằng đồng. Hệ thống loa sở hữu công suất tổng lên tới 60W gồm 1 loa trầm woofer và 2 loa treble tweeter mang lại âm trường rộng mở, chất âm chi tiết trung thực đậm chất Marshall. Loa trang bị công nghệ kết nối không dây Bluetooth 5.2 tiên tiến và cổng cắm jack 3.5mm AUX.', '/view/images/marshall_acton_iii_6.jpg', 1),
+(24, 'JBLCH5', 'Loa Bluetooth JBL Charge 5', 3, 3400000.00, 25, 'JBL Charge 5 là dòng loa bluetooth di động ngoài trời mạnh mẽ được trang bị cấu hình âm thanh gồm driver dạng racetrack tối ưu, loa tweeter độc lập và 2 màng rung thụ động cho âm bass uy lực, tổng công suất đạt 40W RMS. Loa sở hữu khả năng chống nước và chống bụi tuyệt đối đạt chuẩn IP67 bền bỉ. Thời lượng pin phát nhạc liên tục lên đến 20 giờ và tích hợp tính năng sạc dự phòng Powerbank qua cổng USB để sạc lại cho điện thoại.', '/view/images/loa-jbl-charge-5.jpg', 1),
+(25, 'ANKS30', 'Soundcore Space One Pro (A3062)', 3, 4600000.00, 40, 'Soundcore Space One Pro (A3062) là mẫu tai nghe chụp tai không dây nổi bật với công nghệ chống ồn chủ động thích ứng ANC thông minh giúp giảm tiếng ồn xung quanh lên tới 98%. Tai nghe sở hữu driver màng loa chất lượng cao mang lại chất âm chi tiết đạt chứng nhận Hi-Res Audio sắc nét. Thiết bị có thiết kế công thái học đệm tai bằng da êm ái, thời lượng pin sử dụng cực khủng lên đến 60 giờ (tắt ANC) và hỗ trợ sạc nhanh ấn tượng.', '/view/images/anker-soundcore-space.png', 1),
+(26, 'SONWF1', 'Tai nghe Bluetooth True Wireless Sony WF C500', 3, 1200000.00, 50, 'Sony WF-C500 là dòng tai nghe True Wireless nhỏ gọn với thiết kế bo tròn công thái học vừa vặn và thoải mái khi đeo lâu. Tai nghe được trang bị công nghệ tăng cường âm thanh kỹ thuật số DSEE độc quyền giúp phục hồi dải âm cao bị mất khi nén nhạc. Thiết bị có khả năng chống nước đạt chuẩn IPX4 bảo vệ khi tập thể thao, thời lượng pin sử dụng liên tục lên đến 10 giờ trên tai nghe và tổng cộng 20 giờ khi kết hợp cùng hộp sạc nhỏ gọn.', '/view/images/Sony_WF_C500.jpg', 1),
+(27, 'MARGO3', 'Loa Bluetooth Marshall Willen II', 3, 2500000.00, 30, 'Marshall Willen II là dòng loa bluetooth di động siêu nhỏ gọn có thể bỏ túi dễ dàng với thiết kế hoài cổ chống chịu va đập tốt. Mặc dù kích thước nhỏ nhưng loa sở hữu driver toàn dải công suất 10W kết hợp màng cộng hưởng thụ động mang lại chất âm chắc khỏe, rõ ràng đúng chất Marshall. Loa trang bị khả năng chống nước chống bụi chuẩn IP67, tích hợp quai đeo cao su đa năng phía sau và thời lượng pin phát nhạc bền bỉ lên tới 17 giờ.', '/view/images/loa-bluetooth-marshall-willen-ii_5_.png', 1),
+(28, 'JBLGO4', 'Loa Bluetooth JBL Go 4', 3, 950000.00, 60, 'JBL Go 4 là phiên bản loa di động bỏ túi thế hệ mới nhất sở hữu ngôn ngữ thiết kế thời trang nhiều màu sắc cá tính kết hợp dây móc treo balo tiện lợi. Loa được nâng cấp công nghệ âm thanh JBL Pro Sound cho âm bass uy lực rõ nét hơn so với thế hệ cũ trong một thân hình nhỏ gọn công suất 4.2W. Thiết bị trang bị kết nối Bluetooth 5.3 hiện đại nhất, khả năng chống nước bụi chuẩn IP67 lý tưởng cho du lịch và thời lượng pin lên đến 7 giờ.', '/view/images/loa-bluetooth-jbl-go-4.png', 1),
+(29, 'HAGAM1', 'Tai nghe Gaming Havit H2002d', 3, 450000.00, 100, 'Havit H2002d là mẫu tai nghe chụp tai gaming chụp đầu (Over-ear) quốc dân sở hữu màng loa driver kích thước lớn lên đến 53mm mang lại hiệu ứng âm thanh vòm giả lập sống động giúp định vị tiếng bước chân rõ ràng trong game. Tai nghe trang bị microphone tháo rời có khả năng lọc tạp âm đàm thoại trong trẻo sắc nét. Thiết kế đệm tai bằng mút giả da cao cấp dày dặn êm ái, khung kim loại dẻo dai chịu lực tốt và kết nối dây jack 3.5mm ổn định.', '/view/images/tai-nghe-co-day-havit-h2002d.jpg', 1),
+(30, 'APOD3', 'Apple AirPods Max 2024', 3, 12990000.00, 30, 'Apple AirPods Max sở hữu thiết kế tai nghe chụp tai sang trọng bậc nhất với khung bằng thép không gỉ kết hợp phần lưới vòm thoáng khí công thái học ôm sát đầu êm ái. Tai nghe trang bị chip xử lý âm thanh Apple mạnh mẽ cùng công nghệ chống ồn chủ động ANC đỉnh cao, chế độ xuyên âm và âm thanh không gian Spatial Audio theo dõi đầu sống động. Thiết bị sử dụng cổng sạc hiện đại, núm xoay Digital Crown tinh tế và thời lượng pin lên đến 20 giờ.', '/view/images/apple-airpods-max-3.jpg', 1),
+(31, 'LOGIGPRO', 'Chuột Logitech G Pro X Superlight', 4, 3200000.00, 40, 'Logitech G Pro X Superlight là dòng chuột chơi game không dây huyền thoại siêu nhẹ với trọng lượng ấn tượng chỉ chưa đầy 63 gram được thiết kế chuyên dụng cho các game thủ Esport. Chuột được trang bị cảm biến quang học cao cấp độc quyền HERO 25K mang lại độ chính xác tuyệt đối từng pixel với độ nhạy lên đến 25600 DPI. Công nghệ kết nối không dây Lightspeed siêu tốc độ trễ gần như bằng không cùng thời lượng pin sử dụng lên đến 70 giờ liên tục.', '/view/images/chuot_proX_super_light.jpg', 1),
+(32, 'AK75W', 'Bàn phím cơ Aula F75', 4, 1500000.00, 40, 'Aula F75 là mẫu bàn phím cơ không dây layout 75% thời thượng sở hữu cấu trúc mạch xuôi kết hợp lót đệm đục lỗ Gasket Mount mang lại cảm giác gõ phím siêu êm ái, âm thanh trầm ấm cực cuốn. Bàn phím trang bị đầy đủ 3 chế độ kết nối gồm Bluetooth, Wireless 2.4GHz và dây Type-C linh hoạt. Thiết bị tích hợp sẵn hệ thống đèn LED RGB nhiều hiệu ứng rực rỡ, tính năng hotswap thay switch dễ dàng và dung lượng pin sạc lớn 4000mAh.', '/view/images/ban-phim-co-khong-day-aula-f75-den.jpg', 1),
+(33, 'LOGIMX', 'Chuột Logitech MX Master 3S', 4, 2400000.00, 60, 'Logitech MX Master 3S là ông vua dòng chuột công thái học cao cấp dành riêng cho dân văn phòng, coder và designer chuyên nghiệp với form dáng ôm tay chống đau mỏi cổ tay. Chuột sở hữu cảm biến quang học cao cấp độ phân giải 8000 DPI có thể di chuột mượt mà trên mọi bề mặt kể cả mặt kính. Điểm đắt giá là con lăn công nghệ điện từ MagSpeed siêu nhanh yên tĩnh, các nút bấm nhấp chuột giảm tiếng ồn Quiet Clicks và thời lượng pin sạc lên đến 70 ngày.', '/view/images/chuot-khong-day-bluetooth-logitech-mx-master-3s.png', 1),
+(34, 'RAZDAV', 'Chuột Razer DeathAdder V3 Pro', 4, 3100000.00, 30, 'Razer DeathAdder V3 Pro là dòng chuột gaming không dây sở hữu form dáng công thái học bất hủ được tinh chỉnh siêu nhẹ chỉ 63 gram với sự hợp tác từ các game thủ chuyên nghiệp. Chuột trang bị cảm biến quang học thông minh nhất thế giới Razer Focus Pro 30K đạt độ chính xác lên đến 99.8% và switch chuột quang học Gen-3 siêu bền không lo double-click. Công nghệ không dây Razer Hyperspeed cho tốc độ phản hồi cực nhanh ổn định cùng thời lượng pin 90 giờ.', '/view/images/razer_death_v3_pro.jpg', 1),
+(35, 'KEYK2V', 'Bàn phím cơ Keychron K2 V2', 4, 1850000.00, 84, 'Keychron K2 V2 là dòng bàn phím cơ không dây layout 84 phím nhỏ gọn tiện lợi tương thích hoàn hảo và tối ưu tốt nhất cho cả hệ điều hành MacOS và Windows (có sẵn keycap đổi hệ điều hành). Bàn phím hỗ trợ kết nối không dây Bluetooth 5.1 chuyển đổi nhanh giữa 3 thiết bị cùng lúc mượt mà hoặc kết nối dây Type-C. Thiết bị sở hữu viên pin dung lượng khủng 4000mAh, tùy chọn đèn nền LED RGB rực rỡ cùng hệ thống switch Gateron gõ êm ái bền bỉ.', '/view/images/keychron_k2_v2.jpg', 1),
+(36, 'FUHLE9', 'Bàn phím cơ Fuhlen Eraser', 4, 750000.00, 75, 'Fuhlen Eraser là dòng bàn phím cơ full-size 104 phím có mức giá rẻ siêu bền bỉ huyền thoại chuyên dụng cho các phòng game net và học sinh sinh viên. Bàn phím được trang bị công nghệ switch quang cơ (Optical Switch) độc đáo cho tuổi thọ nút bấm lên tới hơn 50 triệu lần nhấn, tốc độ phản hồi siêu tốc và hoàn toàn miễn nhiễm với lỗi double-click. Thiết kế vỏ kim loại chắc chắn sang trọng, hệ thống đèn LED cầu vồng Rainbow đẹp mắt dọc bàn phím.', '/view/images/fulhen_eraser.jpg', 1),
+(37, 'LOGIK1', 'Bộ phím chuột Logitech MK240', 4, 450000.00, 50, 'Logitech MK240 là bộ combo bàn phím và chuột không dây sở hữu thiết kế thời trang tối giản siêu nhỏ gọn giúp tiết kiệm không gian bàn làm việc tối đa. Bàn phím có thiết kế chống tràn nước an toàn kết hợp các phím bấm gõ êm ái, chuột quang đi kèm có độ phân giải 1000 DPI di chuyển mượt mà chính xác. Cả hai thiết bị kết nối ổn định thông qua một đầu thu USB Nano thu phát sóng 2.4GHz phạm vi 10 mét, thời lượng sử dụng pin cực kỳ tiết kiệm.', '/view/images/bo_phim_chuot_mk240.jpg', 1),
+(38, 'NEWMG1', 'Chuột Logitech G403 HERO', 4, 950000.00, 200, 'Logitech G403 HERO là mẫu chuột chơi game có dây mang form dáng công thái học ôm sát lòng bàn tay phải, đi kèm tạ chì tháo rời 10g giúp người dùng dễ dàng tùy chỉnh trọng lượng theo thói quen. Chuột được nâng cấp cảm biến quang học HERO 25K tiên tiến mang lại độ chính xác tuyệt đối từng mili-giây, độ nhạy tùy chỉnh linh hoạt từ 100 đến 25600 DPI. Hệ thống nút bấm có lò xo cơ học phản hồi nhanh nhạy cùng hệ thống đèn LED RGB Lightsync đẹp mắt.', '/view/images/chuot_g304_hero.jpg', 1),
+(39, 'DAREK4', 'Bàn phím DareU EK87', 4, 550000.00, 80, 'DareU EK87 là dòng bàn phím cơ có dây với layout TKL 87 phím nhỏ gọn lược bỏ cụm phím số giúp tối ưu diện tích di chuột cho học sinh, sinh viên và game thủ phân khúc giá rẻ. Bàn phím sử dụng hệ thống switch độc quyền DareU "D-Switch" đem lại cảm giác gõ nảy chắc chắn với độ bền cao lên đến 50 triệu lần nhấn. Phần khung vỏ làm từ chất liệu nhựa ABS dày dặn cứng cáp, đi kèm hệ thống đèn LED nhiều màu rực rỡ sắp xếp theo từng dòng phím.', '/view/images/ban-phim-co-gaming-dareu-ek87.jpg', 1),
+(40, 'AKKO30', 'Bàn phím cơ Akko 3075B Plus', 4, 1950000.00, 70, 'Akko 3075B Plus là mẫu bàn phím cơ không dây phân khúc cận cao cấp sở hữu layout 75% thời thượng, trang bị đầy đủ 3 chế độ kết nối gồm Bluetooth 5.0, Wireless 2.4GHz và dây Type-C. Điểm nhấn của phím là bộ keycap chất liệu nhựa PBT cao cấp đúc hai lớp (Double-Shot) siêu bền bỉ in profile ASA độc quyền không bao giờ mờ chữ. Phím tích hợp sẵn lót foam tiêu âm dày dặn, lED RGB từng phím rực rỡ và tính năng Hotswap 5-pin dễ dàng custom.', '/view/images/ban-phim-co-akko-5075b-plus-black-cyan-12-800x800.jpg', 1);
+
+
