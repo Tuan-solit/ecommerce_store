@@ -55,11 +55,14 @@ public class LoginController extends HttpServlet {
         if (user != null) {
             HttpSession session = req.getSession();
             session.setAttribute("user", user);
+            if ("admin".equals(user.getRole())) {
+                resp.sendRedirect(req.getContextPath() + "/admin/product/list");
+            } else {
+                resp.sendRedirect(req.getContextPath() + "/home");
+            }
 
             //Flash Message
             session.setAttribute("successMessage", "Đăng nhập thành công");
-
-            resp.sendRedirect(req.getContextPath() + "/home");
         } else {
             req.setAttribute("loginError", "Sai tên đăng nhập hoặc mật khẩu");
 
