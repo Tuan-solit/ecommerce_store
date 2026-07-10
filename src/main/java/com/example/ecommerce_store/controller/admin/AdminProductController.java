@@ -1,4 +1,4 @@
-package com.example.ecommerce_store.controller;
+package com.example.ecommerce_store.controller.admin;
 
 import com.example.ecommerce_store.entities.Product;
 import com.example.ecommerce_store.service.IProductService;
