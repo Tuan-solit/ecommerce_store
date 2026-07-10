@@ -6,7 +6,6 @@
 
     <div class="product-card">
 
-        <!-- Badge -->
 
         <span class="badge-sale">
             -10%
@@ -50,19 +49,14 @@
                 <span class="new-price">
                     <fmt:formatNumber value="${p.price}" maxFractionDigits="0"/> đ
                 </span>
-
             </div>
 
             <div class="d-grid gap-2 mt-3">
 
                 <a class="btn btn-outline-danger"
                    href="${pageContext.request.contextPath}/products?action=detail&id=${product.id}">
-                    
-
                         <i class="fas fa-eye"></i>
-
                         Chi tiết
-                    
                 </a>
 
                 <button class="btn btn-danger">
