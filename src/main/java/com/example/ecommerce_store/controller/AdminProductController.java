@@ -12,8 +12,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "ProductController",value = "/admin/product/list")
-public class ProductController extends HttpServlet {
+@WebServlet(name = "AdminProductController",value = "/admin/product/list")
+public class AdminProductController extends HttpServlet {
     IProductService productService = new ProductService();
     
     @Override
