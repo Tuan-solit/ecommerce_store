@@ -1,4 +1,4 @@
-package com.example.ecommerce_store.controller;
+package com.example.ecommerce_store.controller.user;
 
 import com.example.ecommerce_store.entities.Product;
 import com.example.ecommerce_store.service.IProductService;
@@ -10,10 +10,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.util.List;
 
 @WebServlet("/products")
-public class ProductController extends HttpServlet {
+public class UserProductController extends HttpServlet {
 
     private IProductService productService = new ProductService();
 
