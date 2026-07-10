@@ -55,14 +55,14 @@
 
             <div class="d-grid gap-2 mt-3">
 
-                <a class="btn btn-outline-primary"
+                <a class="btn btn-outline-danger"
                    href="${pageContext.request.contextPath}/products?action=detail&id=${product.id}">
-                <button class="btn btn-outline-danger">
+                    
 
-                    <i class="fas fa-eye"></i>
+                        <i class="fas fa-eye"></i>
 
-                    Chi tiết
-
+                        Chi tiết
+                    
                 </a>
 
                 <button class="btn btn-danger">
