@@ -24,12 +24,33 @@
 
     </div>
 
-<div class="row">
-    <c:import url="component/product-card.jsp"/>
-    <c:import url="component/product-card.jsp"/>
-    <c:import url="component/product-card.jsp"/>
-    <c:import url="component/product-card.jsp"/>
-</div>
+    <div id="productCarousel" 
+         class="carousel slide my-5" 
+         data-bs-ride="false"
+         data-bs-interval="false">
+        <div class="carousel-inner">
+            <c:forEach items="${randomProducts}" var="p" varStatus="status">
+                <c:if test="${status.index % 4 == 0}">
+                    <div class="carousel-item ${status.index == 0 ? 'active' : ''}">
+                    <div class="row">
+                </c:if>
+                <c:set var="p" value="${p}" scope="request"/>
+                <c:import url="component/product-card.jsp"/>
+                <c:if test="${status.index % 4 == 3 || status.last}">
+                    </div>
+                    </div>
+                </c:if>
+            </c:forEach>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel" data-bs-slide="prev"
+                style="width: 5%;">
+            <span class="carousel-control-prev-icon bg-dark rounded-circle p-3" aria-hidden="true"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#productCarousel" data-bs-slide="next"
+                style="width: 5%;">
+            <span class="carousel-control-next-icon bg-dark rounded-circle p-3" aria-hidden="true"></span>
+        </button>
+    </div>
 </div>
 <c:import url="component/footer.jsp"/>
 </body>

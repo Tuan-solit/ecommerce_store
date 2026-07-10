@@ -1,10 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<html>
-<head>
-    <title>Title</title>
-</head>
-<body>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
+
 <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
 
     <div class="product-card">
@@ -19,8 +16,8 @@
 
         <div class="product-image">
 
-            <img src="/view/images/laptop-msi.png"
-                 alt="iPhone">
+            <img src="${p.image}"
+                 alt="${p.name}">
 
         </div>
 
@@ -30,7 +27,7 @@
 
             <h6 class="product-name">
 
-                iPhone 15 Pro Max 256GB
+                ${p.name}
 
             </h6>
 
@@ -47,18 +44,18 @@
             <div class="product-price">
 
                 <span class="old-price">
-                    35.990.000đ
+                    <fmt:formatNumber value="${p.price + p.price*0.01}" maxFractionDigits="0"/> đ
                 </span>
 
                 <span class="new-price">
-                    31.990.000đ
+                    <fmt:formatNumber value="${p.price}" maxFractionDigits="0"/> đ
                 </span>
 
             </div>
 
             <div class="d-grid gap-2 mt-3">
 
-                <button class="btn btn-outline-primary">
+                <button class="btn btn-outline-danger">
 
                     <i class="fas fa-eye"></i>
 
@@ -66,7 +63,7 @@
 
                 </button>
 
-                <button class="btn btn-primary">
+                <button class="btn btn-danger">
 
                     <i class="fas fa-cart-plus"></i>
 
@@ -81,5 +78,3 @@
     </div>
 
 </div>
-</body>
-</html>
