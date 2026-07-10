@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <html>
 <head>
@@ -37,6 +38,10 @@
                                    type="text"
                                    name="username"
                                    value="${username}">
+
+                            <small class="text-danger">
+                                ${usernameError}
+                            </small>
                         </div>
 
                         <div class="mb-3">
@@ -44,6 +49,10 @@
                             <input class="form-control"
                                    type="password"
                                    name="password">
+
+                            <small class="text-danger">
+                                ${passwordError}
+                            </small>
                         </div>
 
                         <button class="btn btn-primary w-100">
@@ -52,7 +61,7 @@
 
                     </form>
                     <p style="color:red">
-                        ${message}
+                        ${loginError}
                     </p>
 
                 </div>

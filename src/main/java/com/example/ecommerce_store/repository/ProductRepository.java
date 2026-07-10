@@ -12,76 +12,203 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProductRepository implements IProductRepository {
-    private final String SELECT_ALL = "select p.*, c.category_name \n" +
-            "from products p \n" +
-            "inner join categories c on p.category_id = c.category_id";
-    private final String SELECT_ALL_RANDOM = "select p.*, c.category_name \n" +
-            "from products p \n" +
-            "inner join categories c on p.category_id = c.category_id \n" +
-            "where is_active = true order by rand()";
 
-    // lay tat ca cho admin
+    // ===================== USER =====================
+
+    private static final String FIND_ALL = """
+            SELECT p.*,
+                   c.category_name,
+                   c.category_icon
+            FROM products p
+            LEFT JOIN categories c
+            ON p.category_id = c.category_id
+            WHERE p.is_active = true
+            ORDER BY p.created_at DESC
+            """;
+
+    private static final String FIND_BY_ID = """
+            SELECT p.*,
+                   c.category_name,
+                   c.category_icon
+            FROM products p
+            LEFT JOIN categories c
+            ON p.category_id = c.category_id
+            WHERE p.product_id = ?
+            """;
+
+    private static final String SEARCH = """
+            SELECT p.*,
+                   c.category_name,
+                   c.category_icon
+            FROM products p
+            LEFT JOIN categories c
+            ON p.category_id = c.category_id
+            WHERE p.product_name LIKE ?
+            AND p.is_active = true
+            ORDER BY p.created_at DESC
+            """;
+
+    // ===================== ADMIN =====================
+
+    private static final String SELECT_ALL = """
+            SELECT p.*,
+                   c.category_name,
+                   c.category_icon
+            FROM products p
+            INNER JOIN categories c
+            ON p.category_id = c.category_id
+            ORDER BY p.created_at DESC
+            """;
+
+    private static final String SELECT_ALL_RANDOM = """
+            SELECT p.*,
+                   c.category_name,
+                   c.category_icon
+            FROM products p
+            INNER JOIN categories c
+            ON p.category_id = c.category_id
+            WHERE p.is_active = true
+            ORDER BY RAND()
+            """;
+
+    // =====================================================
+    // USER
+    // =====================================================
+
     @Override
-    public List<Product> getProductList() {
-        List<Product> productList = new ArrayList<>();
-        try (
-                Connection connection = DBConnection.getDBConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL);
-        ) {
-            ResultSet resultSet = preparedStatement.executeQuery();
+    public List<Product> findAll() {
+
+        List<Product> products = new ArrayList<>();
+
+        try (Connection connection = DBConnection.getDBConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+
             while (resultSet.next()) {
-                int id = resultSet.getInt("product_id");
-                String code = resultSet.getString("product_code");
-                String name = resultSet.getString("product_name");
-                int categoryId = resultSet.getInt("category_id");
-                String categoryName = resultSet.getString("category_name");
-                double price = resultSet.getDouble("price");
-                int quantity = resultSet.getInt("quantity");
-                String description = resultSet.getString("description");
-                String image = resultSet.getString("image");
-                java.util.Date created = resultSet.getTimestamp("created_at");
-                boolean isActive = resultSet.getBoolean("is_active");
-                Category category = new Category();
-                category.setId(categoryId);
-                category.setName(categoryName);
-                Product product = new Product(id, code, name, price, quantity, description, image, created, isActive, category);
-                productList.add(product);
+                products.add(getProduct(resultSet));
             }
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+
+        return products;
+    }
+
+    @Override
+    public Product findById(int id) {
+
+        try (Connection connection = DBConnection.getDBConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_ID)) {
+
+            preparedStatement.setInt(1, id);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                return getProduct(resultSet);
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return null;
+    }
+
+    @Override
+    public List<Product> search(String keyword) {
+
+        List<Product> products = new ArrayList<>();
+
+        try (Connection connection = DBConnection.getDBConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SEARCH)) {
+
+            preparedStatement.setString(1, "%" + keyword + "%");
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                products.add(getProduct(resultSet));
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return products;
+    }
+
+    // =====================================================
+    // ADMIN
+    // =====================================================
+
+    @Override
+    public List<Product> getProductList() {
+
+        List<Product> productList = new ArrayList<>();
+
+        try (Connection connection = DBConnection.getDBConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+
+            while (resultSet.next()) {
+                productList.add(getProduct(resultSet));
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
         return productList;
     }
 
     @Override
     public List<Product> getProductRandomList() {
+
         List<Product> productList = new ArrayList<>();
-        try (
-                Connection connection = DBConnection.getDBConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_RANDOM);
-        ) {
-            ResultSet resultSet = preparedStatement.executeQuery();
+
+        try (Connection connection = DBConnection.getDBConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_RANDOM);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+
             while (resultSet.next()) {
-                int id = resultSet.getInt("product_id");
-                String code = resultSet.getString("product_code");
-                String name = resultSet.getString("product_name");
-                int categoryId = resultSet.getInt("category_id");
-                String categoryName = resultSet.getString("category_name");
-                double price = resultSet.getDouble("price");
-                int quantity = resultSet.getInt("quantity");
-                String description = resultSet.getString("description");
-                String image = resultSet.getString("image");
-                java.util.Date created = resultSet.getTimestamp("created_at");
-                boolean isActive = resultSet.getBoolean("is_active");
-                Category category = new Category();
-                category.setId(categoryId);
-                category.setName(categoryName);
-                Product product = new Product(id, code, name, price, quantity, description, image, created, isActive, category);
-                productList.add(product);
+                productList.add(getProduct(resultSet));
             }
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+
         return productList;
+    }
+
+    // =====================================================
+    // DÙNG CHUNG
+    // =====================================================
+
+    private Product getProduct(ResultSet resultSet) throws SQLException {
+
+        Product product = new Product();
+
+        product.setId(resultSet.getInt("product_id"));
+        product.setProductCode(resultSet.getString("product_code"));
+        product.setName(resultSet.getString("product_name"));
+        product.setPrice(resultSet.getDouble("price"));
+        product.setQuantity(resultSet.getInt("quantity"));
+        product.setDescription(resultSet.getString("description"));
+        product.setImage(resultSet.getString("image"));
+        product.setCreated(resultSet.getTimestamp("created_at"));
+        product.setActive(resultSet.getBoolean("is_active"));
+
+        Category category = new Category();
+
+        category.setId(resultSet.getInt("category_id"));
+        category.setName(resultSet.getString("category_name"));
+        category.setIcon(resultSet.getString("category_icon"));
+
+        product.setCategory(category);
+
+        return product;
     }
 }

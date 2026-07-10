@@ -30,19 +30,25 @@
 
             <div class="col-md-5">
 
-                <form>
+                <form action="${pageContext.request.contextPath}/products" method="get">
+
+                    <input type="hidden"
+                           name="action"
+                           value="search">
 
                     <div class="input-group">
 
                         <input type="text"
                                class="form-control"
-                               placeholder="Nhập tên sản phẩm, mã sản phẩm cần tìm...">
+                               name="keyword"
+                               value="${keyword}"
+                               placeholder="Nhập tên sản phẩm...">
 
-                            <button class="btn btn-warning" type="submit">
+                        <button class="btn btn-warning">
 
-                                <i class="fas fa-search"></i>
+                            <i class="fas fa-search"></i>
 
-                            </button>
+                        </button>
 
                     </div>
 
@@ -60,12 +66,108 @@
                     <jsp:include page="/view/component/account.jsp"/>
 
                     <!-- Cart -->
-                    <a href="#">
-                        <i class="fas fa-shopping-cart"></i>
-                        Giỏ hàng
-                    </a>
+                    <c:choose>
+
+                        <c:when test="${sessionScope.user != null}">
+
+                            <a href="${pageContext.request.contextPath}/cart">
+
+                                <i class="fas fa-shopping-cart"></i>
+
+                                Giỏ hàng
+
+                            </a>
+
+                        </c:when>
+
+                        <c:otherwise>
+
+                            <a href="#"
+                               data-bs-toggle="modal"
+                               data-bs-target="#loginRequiredModal">
+
+                                <i class="fas fa-shopping-cart"></i>
+
+                                Giỏ hàng
+
+                            </a>
+
+                        </c:otherwise>
+
+                    </c:choose>
 
                 </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<div class="modal fade"
+     id="loginRequiredModal"
+     tabindex="-1">
+
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h5 class="modal-title">
+
+                    Thông báo
+
+                </h5>
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal">
+                </button>
+
+            </div>
+
+            <div class="modal-body text-center">
+
+                <i class="fas fa-lock fa-3x text-warning mb-3"></i>
+
+                <h5>
+
+                    Bạn cần đăng nhập để sử dụng giỏ hàng.
+
+                </h5>
+
+                <p>
+
+                    Nếu chưa có tài khoản hãy đăng ký ngay.
+
+                </p>
+
+            </div>
+
+            <div class="modal-footer">
+
+                <a href="${pageContext.request.contextPath}/login"
+                   class="btn btn-primary">
+
+                    Đăng nhập
+
+                </a>
+
+                <a href="${pageContext.request.contextPath}/register"
+                   class="btn btn-success">
+
+                    Đăng ký
+
+                </a>
+
+                <button class="btn btn-secondary"
+                        data-bs-dismiss="modal">
+
+                    Đóng
+
+                </button>
 
             </div>
 
