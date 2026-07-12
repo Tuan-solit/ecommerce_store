@@ -10,4 +10,7 @@ public interface IProductService {
     Product findById(int id);
     List<Product> getProductList();
     List<Product> getProductRandomList();
+    boolean add(Product product);
+    boolean edit(Product product);
+    boolean delete(int id);
 }
