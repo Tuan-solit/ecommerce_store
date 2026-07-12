@@ -34,4 +34,19 @@ public class ProductService implements IProductService {
     public List<Product> getProductRandomList() {
         return productRepository.getProductRandomList();
     }
+
+    @Override
+    public boolean add(Product product) {
+        return productRepository.add(product);
+    }
+
+    @Override
+    public boolean edit(Product product) {
+        return productRepository.edit(product);
+    }
+
+    @Override
+    public boolean delete(int id) {
+        return productRepository.delete(id);
+    }
 }

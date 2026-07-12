@@ -71,6 +71,9 @@ public class ProductRepository implements IProductRepository {
             ORDER BY RAND()
             """;
 
+    private static final String INSERT_INTO = "insert into products (product_code, product_name, category_id, price, quantity, description, image, is_active) values(?,?,?,?,?,?,?,?)";
+    private static final String UPDATE_INFO = "update products set product_code = ?, product_name = ?,category_id = ?, price = ?, quantity = ?, description = ?, image = ?, is_active = ? where product_id = ?;";
+    private static final String UPDATE_STATUS = "update products set is_active = not is_active WHERE product_id = ?";
     // =====================================================
     // USER
     // =====================================================
@@ -183,6 +186,65 @@ public class ProductRepository implements IProductRepository {
         return productList;
     }
 
+    @Override
+    public boolean add(Product product) {
+        try (Connection connection = DBConnection.getDBConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_INTO);
+        ) {
+            preparedStatement.setString(1, product.getProductCode());
+            preparedStatement.setString(2,product.getName());
+            preparedStatement.setInt(3,product.getCategory().getId());
+            preparedStatement.setDouble(4,product.getPrice());
+            preparedStatement.setInt(5,product.getQuantity());
+            preparedStatement.setString(6, product.getDescription());
+            preparedStatement.setString(7, product.getImage());
+            preparedStatement.setBoolean(8, product.isActive());
+            int effectRow = preparedStatement.executeUpdate();
+            return effectRow == 1;
+        } catch (SQLException e) {
+            System.out.println("---loi ket noi DB");
+        }
+        return false;
+    }
+
+    @Override
+    public boolean edit(Product product) {
+        try (Connection connection = DBConnection.getDBConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_INFO);
+        ) {
+            preparedStatement.setString(1, product.getProductCode());
+            preparedStatement.setString(2,product.getName());
+            preparedStatement.setInt(3,product.getCategory().getId());
+            preparedStatement.setDouble(4,product.getPrice());
+            preparedStatement.setInt(5,product.getQuantity());
+            preparedStatement.setString(6, product.getDescription());
+            preparedStatement.setString(7, product.getImage());
+            preparedStatement.setBoolean(8, product.isActive());
+            preparedStatement.setInt(9,product.getId());
+            int effectRow = preparedStatement.executeUpdate();
+            return effectRow == 1;
+        } catch (SQLException e) {
+            System.out.println("---loi ket noi DB");
+        }
+        return false;
+    }
+
+    @Override
+    public boolean delete(int id) {
+        try (Connection connection = DBConnection.getDBConnection();
+             PreparedStatement ps = connection.prepareStatement(UPDATE_STATUS)) {
+
+            ps.setInt(1, id);
+
+            int rowAffected = ps.executeUpdate();
+            return rowAffected > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     // =====================================================
     // DÙNG CHUNG
     // =====================================================
@@ -211,4 +273,6 @@ public class ProductRepository implements IProductRepository {
 
         return product;
     }
+    
+    
 }

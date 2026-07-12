@@ -27,7 +27,7 @@
 
         <li class="nav-item">
 
-            <a href="/product"
+            <a href="/admin/product/list"
                class="nav-link">
 
                 <i class="fa-solid fa-box"></i>
@@ -40,7 +40,7 @@
         
         <li class="nav-item">
 
-            <a href="/category"
+            <a href="/admin/category/list"
                class="nav-link">
 
                 <i class="fa-solid fa-layer-group"></i>
@@ -55,7 +55,7 @@
 
         <li class="nav-item">
 
-            <a href="/order"
+            <a href="/admin/order/list"
                class="nav-link">
 
                 <i class="fa-solid fa-cart-shopping"></i>
