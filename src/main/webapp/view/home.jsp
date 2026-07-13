@@ -28,8 +28,17 @@
          class="carousel slide my-5" 
          data-bs-ride="false"
          data-bs-interval="false">
+        <c:choose>
+            <c:when test="${not empty products}">
+                <c:set var="listProducts" value="${products}" />
+            </c:when>
+
+            <c:otherwise>
+                <c:set var="listProducts" value="${randomProducts}" />
+            </c:otherwise>
+        </c:choose>
         <div class="carousel-inner">
-            <c:forEach items="${randomProducts}" var="p" varStatus="status">
+            <c:forEach items="${listProducts}" var="p" varStatus="status">
                 <c:if test="${status.index % 4 == 0}">
                     <div class="carousel-item ${status.index == 0 ? 'active' : ''}">
                     <div class="row">

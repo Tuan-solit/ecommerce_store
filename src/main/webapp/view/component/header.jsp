@@ -16,12 +16,11 @@
 
             <div class="col-md-3">
 
-                <a href="/">
+                <a href="${pageContext.request.contextPath}/home">
 
-                    <img src="/view/images/logo.png"
+                    <img src="${pageContext.request.contextPath}/view/images/logo.png"
                          class="logo"
                          alt="Logo">
-
                 </a>
 
             </div>
@@ -30,27 +29,23 @@
 
             <div class="col-md-5">
 
-                <form action="${pageContext.request.contextPath}/products" method="get">
+                <form class="d-flex"
+                      action="${pageContext.request.contextPath}/products"
+                      method="get">
 
                     <input type="hidden"
                            name="action"
                            value="search">
 
-                    <div class="input-group">
+                    <input class="form-control me-2"
+                           type="search"
+                           name="keyword"
+                           placeholder="Tìm sản phẩm..."
+                           value="${keyword}">
 
-                        <input type="text"
-                               class="form-control"
-                               name="keyword"
-                               value="${keyword}"
-                               placeholder="Nhập tên sản phẩm...">
-
-                        <button class="btn btn-warning">
-
-                            <i class="fas fa-search"></i>
-
-                        </button>
-
-                    </div>
+                    <button class="btn btn-primary">
+                        <i class="fas fa-search"></i>
+                    </button>
 
                 </form>
 
@@ -68,13 +63,26 @@
                     <!-- Cart -->
                     <c:choose>
 
-                        <c:when test="${sessionScope.user != null}">
+                        <c:when test="${sessionScope.user != null && sessionScope.user.role == 'user'}">
 
-                            <a href="${pageContext.request.contextPath}/cart">
+                            <a href="${pageContext.request.contextPath}/cart"
+                               class="position-relative text-decoration-none">
 
-                                <i class="fas fa-shopping-cart"></i>
+                                <i class="fas fa-shopping-cart fa-lg"></i>
 
-                                Giỏ hàng
+                                <span class="ms-1">
+                                    Giỏ hàng
+                                </span>
+
+                                <c:if test="${not empty sessionScope.cart && sessionScope.cart.totalQuantity > 0}">
+
+                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+
+                                            ${sessionScope.cart.totalQuantity}
+
+                                    </span>
+
+                                </c:if>
 
                             </a>
 
