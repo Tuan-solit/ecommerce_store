@@ -13,4 +13,5 @@ public interface IProductService {
     boolean add(Product product);
     boolean edit(Product product);
     boolean delete(int id);
+    int countProductByCategoryId(int id);
 }

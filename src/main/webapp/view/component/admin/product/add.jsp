@@ -39,7 +39,7 @@
 
                 <div class="card-body">
 
-                    <form action="/admin/product/list?action=add"
+                    <form action="/admin/product?action=add"
 
                           method="post">
 
@@ -227,8 +227,8 @@
 
                         <a
 
-                                href="/admin/product/list"
-
+                                href="/admin/product"
+\
                                 class="btn btn-secondary">
 
                             Quay lại
