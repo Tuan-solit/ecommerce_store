@@ -96,16 +96,29 @@
 
                     <div class="d-grid gap-2 mt-4">
 
-                        <button class="btn btn-primary btn-lg">
+                        <form action="${pageContext.request.contextPath}/cart"
+                              method="post">
 
-                            <i class="fas fa-cart-plus"></i>
+                            <input type="hidden"
+                                   name="action"
+                                   value="add">
 
-                            Thêm vào giỏ hàng
+                            <input type="hidden"
+                                   name="id"
+                                   value="${product.id}">
 
-                        </button>
+                            <button type="submit"
+                                    class="btn btn-primary btn-lg w-100">
+
+                                <i class="fas fa-cart-plus"></i>
+
+                                Thêm vào giỏ hàng
+
+                            </button>
+
+                        </form>
 
                         <a class="btn btn-outline-secondary"
-
                            href="${pageContext.request.contextPath}/products">
 
                             <i class="fas fa-arrow-left"></i>
