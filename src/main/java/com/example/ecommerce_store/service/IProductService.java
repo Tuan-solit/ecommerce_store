@@ -8,6 +8,8 @@ public interface IProductService {
     List<Product> findAll();
     List<Product> search(String keyword);
     Product findById(int id);
+
+    // admin
     List<Product> getProductList();
     List<Product> getProductRandomList();
     boolean add(Product product);

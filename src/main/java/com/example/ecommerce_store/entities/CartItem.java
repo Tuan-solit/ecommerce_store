@@ -7,6 +7,11 @@ public class CartItem {
     public CartItem() {
     }
 
+    public CartItem(Product product, int quantity) {
+        this.product = product;
+        this.quantity = quantity;
+    }
+
     public Product getProduct() {
         return product;
     }
@@ -23,8 +28,7 @@ public class CartItem {
         this.quantity = quantity;
     }
 
-    public CartItem(Product product, int quantity) {
-        this.product = product;
-        this.quantity = quantity;
+    public double getSubTotal() {
+        return product.getPrice() * quantity;
     }
 }

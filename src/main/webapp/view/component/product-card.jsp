@@ -15,7 +15,7 @@
 
         <div class="product-image">
 
-            <img src="${p.image}"
+            <img src="${pageContext.request.contextPath}${p.image}"
                  alt="${p.name}">
 
         </div>
@@ -38,12 +38,13 @@
                 <i class="fas fa-star"></i>
                 <i class="fas fa-star-half-alt"></i>
 
+
             </div>
 
             <div class="product-price">
 
                 <span class="old-price">
-                    <fmt:formatNumber value="${p.price + p.price*0.01}" maxFractionDigits="0"/> đ
+                    <fmt:formatNumber value="${p.price * 1.1}" maxFractionDigits="0"/> đ
                 </span>
 
                 <span class="new-price">
@@ -54,19 +55,24 @@
             <div class="d-grid gap-2 mt-3">
 
                 <a class="btn btn-outline-danger"
-                   href="${pageContext.request.contextPath}/products?action=detail&id=${product.id}">
+                   href="${pageContext.request.contextPath}/products?action=detail&id=${p.id}">
                         <i class="fas fa-eye"></i>
                         Chi tiết
                 </a>
 
-                <button class="btn btn-danger">
+                <form action="${pageContext.request.contextPath}/cart"
+                      method="post"
+                      class="d-grid">
 
-                    <i class="fas fa-cart-plus"></i>
+                    <input type="hidden" name="action" value="add">
+                    <input type="hidden" name="id" value="${p.id}">
 
-                    Thêm vào giỏ
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fas fa-cart-plus"></i>
+                        Thêm vào giỏ
+                    </button>
 
-                </button>
-
+                </form>
             </div>
 
         </div>

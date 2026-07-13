@@ -101,4 +101,14 @@ insert into products (product_id, product_code, product_name, category_id, price
 (39, 'DAREK4', 'Bàn phím DareU EK87', 4, 550000.00, 80, 'DareU EK87 là dòng bàn phím cơ có dây với layout TKL 87 phím nhỏ gọn lược bỏ cụm phím số giúp tối ưu diện tích di chuột cho học sinh, sinh viên và game thủ phân khúc giá rẻ. Bàn phím sử dụng hệ thống switch độc quyền DareU "D-Switch" đem lại cảm giác gõ nảy chắc chắn với độ bền cao lên đến 50 triệu lần nhấn. Phần khung vỏ làm từ chất liệu nhựa ABS dày dặn cứng cáp, đi kèm hệ thống đèn LED nhiều màu rực rỡ sắp xếp theo từng dòng phím.', '/view/images/ban-phim-co-gaming-dareu-ek87.jpg', 1),
 (40, 'AKKO30', 'Bàn phím cơ Akko 3075B Plus', 4, 1950000.00, 70, 'Akko 3075B Plus là mẫu bàn phím cơ không dây phân khúc cận cao cấp sở hữu layout 75% thời thượng, trang bị đầy đủ 3 chế độ kết nối gồm Bluetooth 5.0, Wireless 2.4GHz và dây Type-C. Điểm nhấn của phím là bộ keycap chất liệu nhựa PBT cao cấp đúc hai lớp (Double-Shot) siêu bền bỉ in profile ASA độc quyền không bao giờ mờ chữ. Phím tích hợp sẵn lót foam tiêu âm dày dặn, lED RGB từng phím rực rỡ và tính năng Hotswap 5-pin dễ dàng custom.', '/view/images/ban-phim-co-akko-5075b-plus-black-cyan-12-800x800.jpg', 1);
 
+alter table orders
+    add receiver_name VARCHAR(100) NOT NULL AFTER user_id;
 
+alter table orders
+    add phone VARCHAR(20) NOT NULL AFTER receiver_name;
+
+alter table orders
+    add address VARCHAR(255) NOT NULL AFTER phone;
+
+alter table orders
+    add note TEXT AFTER address;
