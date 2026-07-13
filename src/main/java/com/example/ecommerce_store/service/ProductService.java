@@ -49,4 +49,9 @@ public class ProductService implements IProductService {
     public boolean delete(int id) {
         return productRepository.delete(id);
     }
+
+    @Override
+    public int countProductByCategoryId(int id) {
+        return productRepository.countProductByCategoryId(id);
+    }
 }

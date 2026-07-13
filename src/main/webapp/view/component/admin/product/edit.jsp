@@ -40,7 +40,7 @@
 
                 <div class="card-body">
 
-                    <form action="/admin/product/list?action=edit"
+                    <form action="/admin/product?action=edit"
 
                           method="post">
 
@@ -254,7 +254,7 @@
 
                         <a
 
-                                href="/admin/product/list"
+                                href="/admin/product"
 
                                 class="btn btn-secondary">
 

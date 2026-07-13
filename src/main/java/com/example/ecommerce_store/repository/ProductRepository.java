@@ -74,6 +74,7 @@ public class ProductRepository implements IProductRepository {
     private static final String INSERT_INTO = "insert into products (product_code, product_name, category_id, price, quantity, description, image, is_active) values(?,?,?,?,?,?,?,?)";
     private static final String UPDATE_INFO = "update products set product_code = ?, product_name = ?,category_id = ?, price = ?, quantity = ?, description = ?, image = ?, is_active = ? where product_id = ?;";
     private static final String UPDATE_STATUS = "update products set is_active = not is_active WHERE product_id = ?";
+    private static final String COUNT_PRODUCT_BY_CATEGORY_ID = "select count(*) from products where category_id = ?";
     // =====================================================
     // USER
     // =====================================================
@@ -192,10 +193,10 @@ public class ProductRepository implements IProductRepository {
              PreparedStatement preparedStatement = connection.prepareStatement(INSERT_INTO);
         ) {
             preparedStatement.setString(1, product.getProductCode());
-            preparedStatement.setString(2,product.getName());
-            preparedStatement.setInt(3,product.getCategory().getId());
-            preparedStatement.setDouble(4,product.getPrice());
-            preparedStatement.setInt(5,product.getQuantity());
+            preparedStatement.setString(2, product.getName());
+            preparedStatement.setInt(3, product.getCategory().getId());
+            preparedStatement.setDouble(4, product.getPrice());
+            preparedStatement.setInt(5, product.getQuantity());
             preparedStatement.setString(6, product.getDescription());
             preparedStatement.setString(7, product.getImage());
             preparedStatement.setBoolean(8, product.isActive());
@@ -213,14 +214,14 @@ public class ProductRepository implements IProductRepository {
              PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_INFO);
         ) {
             preparedStatement.setString(1, product.getProductCode());
-            preparedStatement.setString(2,product.getName());
-            preparedStatement.setInt(3,product.getCategory().getId());
-            preparedStatement.setDouble(4,product.getPrice());
-            preparedStatement.setInt(5,product.getQuantity());
+            preparedStatement.setString(2, product.getName());
+            preparedStatement.setInt(3, product.getCategory().getId());
+            preparedStatement.setDouble(4, product.getPrice());
+            preparedStatement.setInt(5, product.getQuantity());
             preparedStatement.setString(6, product.getDescription());
             preparedStatement.setString(7, product.getImage());
             preparedStatement.setBoolean(8, product.isActive());
-            preparedStatement.setInt(9,product.getId());
+            preparedStatement.setInt(9, product.getId());
             int effectRow = preparedStatement.executeUpdate();
             return effectRow == 1;
         } catch (SQLException e) {
@@ -243,6 +244,25 @@ public class ProductRepository implements IProductRepository {
             e.printStackTrace();
             return false;
         }
+    }
+
+    @Override
+    public int countProductByCategoryId(int id) {
+        try (Connection connection = DBConnection.getDBConnection();
+             PreparedStatement ps = connection.prepareStatement(COUNT_PRODUCT_BY_CATEGORY_ID)) {
+
+            ps.setInt(1, id);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return 0;
     }
 
     // =====================================================
@@ -273,6 +293,6 @@ public class ProductRepository implements IProductRepository {
 
         return product;
     }
-    
-    
+
+
 }
