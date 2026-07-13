@@ -56,7 +56,7 @@ public class LoginController extends HttpServlet {
             HttpSession session = req.getSession();
             session.setAttribute("user", user);
             if ("admin".equals(user.getRole())) {
-                resp.sendRedirect(req.getContextPath() + "/admin/product/list");
+                resp.sendRedirect(req.getContextPath() + "/admin/product");
             } else {
                 resp.sendRedirect(req.getContextPath() + "/home");
             }

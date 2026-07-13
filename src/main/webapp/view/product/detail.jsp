@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 
 <html>
 
@@ -67,7 +68,7 @@
 
                     <h2 class="text-danger fw-bold">
 
-                        ${product.price} VNĐ
+                        <fmt:formatNumber value="${product.price}" maxFractionDigits="0"/> VNĐ
 
                     </h2>
 
