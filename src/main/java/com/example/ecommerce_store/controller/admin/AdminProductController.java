@@ -11,11 +11,12 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "AdminProductController",value = "/admin/product/list")
+@WebServlet(name = "AdminProductController",value = "/admin/product")
 public class AdminProductController extends HttpServlet {
     IProductService productService = new ProductService();
     ICategoryService categoryService = new CategoryService();
@@ -110,25 +111,28 @@ public class AdminProductController extends HttpServlet {
                 editInfo(req,resp);
                 break;
             case "delete":
-                inActive(req,resp);
+                changeStatus(req,resp);
                 break;
             default:
         }
     }
 
-    private void inActive(HttpServletRequest req, HttpServletResponse resp) {
+    private void changeStatus(HttpServletRequest req, HttpServletResponse resp) {
         int id = Integer.parseInt(req.getParameter("productId"));
         boolean isSuccess = productService.delete(id);
 
         if (isSuccess) {
-            try {
-                resp.sendRedirect(req.getContextPath() + "/admin/product/list");
+            try {HttpSession session = req.getSession();
+                session.setAttribute("toastMessage", "change_success");
+                resp.sendRedirect(req.getContextPath() + "/admin/product");
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         } else {
             try {
-                resp.sendRedirect(req.getContextPath() + "/admin/product/list?error=true");
+                HttpSession session = req.getSession();
+                session.setAttribute("toastMessage", "change_failed");
+                resp.sendRedirect(req.getContextPath() + "/admin/product");
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -152,12 +156,15 @@ public class AdminProductController extends HttpServlet {
         boolean isSuccess = productService.edit(product);
         if (isSuccess) {
             try {
-                resp.sendRedirect(req.getContextPath() + "/admin/product/list");
+                HttpSession session = req.getSession();
+                session.setAttribute("toastMessage", "update_success");
+                resp.sendRedirect(req.getContextPath() + "/admin/product");
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         } else {
-            req.setAttribute("message", "Cập nhật sản phẩm thất bại!");
+            HttpSession session = req.getSession();
+            session.setAttribute("toastMessage", "update_failed");
             req.setAttribute("product", product);
             try {
                 req.getRequestDispatcher("/view/component/admin/product/edit.jsp").forward(req, resp);
@@ -185,12 +192,15 @@ public class AdminProductController extends HttpServlet {
         boolean isSuccess = productService.add(product);
         if (isSuccess) {
             try {
-                resp.sendRedirect(req.getContextPath() + "/admin/product/list");
+                HttpSession session = req.getSession();
+                session.setAttribute("toastMessage", "insert_success");
+                resp.sendRedirect(req.getContextPath() + "/admin/product");
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         } else {
-            req.setAttribute("message", "Tạo sản phẩm thất bại!");
+            HttpSession session = req.getSession();
+            session.setAttribute("toastMessage", "insert_failed");
             req.setAttribute("product", product);
             try {
                 req.getRequestDispatcher("/view/admin/product/add.jsp").forward(req, resp);

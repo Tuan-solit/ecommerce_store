@@ -13,5 +13,20 @@ public class CategoryService implements ICategoryService{
     public List<Category> getCategoryList() {
         return categoryRepository.getCategoryList();
     }
+
+    @Override
+    public boolean add(Category category) {
+        return categoryRepository.add(category);
+    }
+
+    @Override
+    public boolean edit(Category category) {
+        return categoryRepository.edit(category);
+    }
+
+    @Override
+    public boolean delete(int id) {
+        return categoryRepository.delete(id);
+    }
 }
 
