@@ -23,8 +23,10 @@
 
             <ul class="navbar-nav d-flex flex-row gap-4 ps-3">
                 <li class="nav-item">
-                    <a class="nav-link active" href="index.jsp">
-                        <i class="fas fa-home me-1"></i> Trang chủ
+                    <a class="nav-link active"
+                       href="${pageContext.request.contextPath}/home">
+                        <i class="fas fa-home me-1"></i>
+                        Trang chủ
                     </a>
                 </li>
                 <li class="nav-item">
@@ -38,9 +40,15 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="order-history">
-                        <i class="fas fa-history me-1"></i> Lịch sử đơn hàng
+                    <c:if test="${sessionScope.user != null && sessionScope.user.role == 'user'}">
+                <li class="nav-item">
+                    <a class="nav-link"
+                       href="${pageContext.request.contextPath}/orders">
+                        <i class="fas fa-history me-1"></i>
+                        Lịch sử đơn hàng
                     </a>
+                </li>
+                </c:if>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="contact.jsp">
