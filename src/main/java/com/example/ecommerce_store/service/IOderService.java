@@ -11,4 +11,5 @@ public interface IOderService {
     boolean checkout(User user, Cart cart, Order order);
     List<Order> findByUser(int userId);
     List<OrderDetail> findByOrderDetail(int orderId);
+    Order findById(int orderId);
 }

@@ -31,6 +31,8 @@ public class OrderRepository implements IOrderRepository {
             " ON od.product_id=p.product_id" +
             "WHERE order_id=?";
 
+    private static final String FIND_ORDER_BY_ID = "SELECT * FROM orders WHERE order_id = ?";
+
     @Override
     public boolean checkout(User user, Cart cart, Order order) {
 
@@ -222,5 +224,36 @@ public class OrderRepository implements IOrderRepository {
         }
 
         return details;
+    }
+
+    @Override
+    public Order findById(int orderId) {
+
+        try (Connection connection = DBConnection.getDBConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(FIND_ORDER_BY_ID)) {
+
+            preparedStatement.setInt(1, orderId);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                Order order = new Order();
+
+                order.setOrderId(resultSet.getInt("order_id"));
+                order.setUserId(resultSet.getInt("user_id"));
+                order.setOrderDate(resultSet.getTimestamp("order_date"));
+                order.setReceiverName(resultSet.getString("receiver_name"));
+                order.setPhone(resultSet.getString("phone"));
+                order.setAddress(resultSet.getString("address"));
+                order.setNote(resultSet.getString("note"));
+                order.setTotalAmount(resultSet.getDouble("total_amount"));
+                order.setStatus(resultSet.getString("status"));
+
+                return order;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
     }
 }

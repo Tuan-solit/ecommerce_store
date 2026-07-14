@@ -59,9 +59,12 @@ public class OrderController extends HttpServlet {
 
         int orderId = Integer.parseInt(req.getParameter("id"));
 
+        Order order = orderService.findById(orderId);
+
         List<OrderDetail> details = orderService.findByOrderDetail(orderId);
 
         req.setAttribute("details", details);
+        req.setAttribute("order", order);
 
         req.getRequestDispatcher("/view/order/order-detail.jsp").forward(req, resp);
     }

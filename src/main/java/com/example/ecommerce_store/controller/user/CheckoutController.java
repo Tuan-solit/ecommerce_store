@@ -35,6 +35,8 @@ public class CheckoutController extends HttpServlet {
             resp.sendRedirect(req.getContextPath() + "/cart");
         }
 
+        req.setAttribute("user", user);
+
         req.getRequestDispatcher("/view/order/checkout.jsp").forward(req, resp);
     }
 

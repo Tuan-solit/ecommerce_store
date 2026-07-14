@@ -27,4 +27,9 @@ public class OderService implements IOderService{
     public List<OrderDetail> findByOrderDetail(int orderId) {
         return orderRepository.findByOrderDetail(orderId);
     }
+
+    @Override
+    public Order findById(int orderId) {
+        return orderRepository.findById(orderId);
+    }
 }
