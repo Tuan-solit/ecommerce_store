@@ -25,10 +25,10 @@ public class OrderRepository implements IOrderRepository {
     private static final String SELECT_ORDER_BY_USER = "SELECT * FROM orders WHERE user_id=? ORDER BY order_date DESC";
 
 
-    private static final String SELECT_DETAIL_BY_ORDER = "SELECT od.*, p.product_name, p.image" +
-            "FROM order_details od" +
-            "JOIN products p" +
-            " ON od.product_id=p.product_id" +
+    private static final String SELECT_DETAIL_BY_ORDER = "SELECT od.*, p.product_name, p.image " +
+            "FROM order_details od " +
+            "JOIN products p " +
+            "ON od.product_id=p.product_id " +
             "WHERE order_id=?";
 
     private static final String FIND_ORDER_BY_ID = "SELECT * FROM orders WHERE order_id = ?";
