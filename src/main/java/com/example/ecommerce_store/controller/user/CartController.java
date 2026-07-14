@@ -78,8 +78,8 @@ public class CartController extends HttpServlet {
     }
 
     private void updateCart(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        int id = Integer.parseInt(req.getParameter("id"));
 
+        int id = Integer.parseInt(req.getParameter("id"));
         int quantity = Integer.parseInt(req.getParameter("quantity"));
 
         Cart cart = (Cart) req.getSession().getAttribute("cart");
@@ -88,7 +88,10 @@ public class CartController extends HttpServlet {
             cart.update(id, quantity);
         }
 
-        resp.sendRedirect(req.getContextPath() + "/cart");
+        resp.setContentType("application/json");
+        resp.setCharacterEncoding("UTF-8");
+
+        resp.getWriter().write("{\"success\":true}");
     }
 
     private void deleteCart(HttpServletRequest req, HttpServletResponse resp) throws IOException {
