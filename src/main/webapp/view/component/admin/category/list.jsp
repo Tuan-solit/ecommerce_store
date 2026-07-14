@@ -80,60 +80,85 @@
                         </div>
 
                     </div>
+                    <c:choose>
 
-                    <table class="table table-hover align-middle">
+                        <c:when test="${empty categoryList}">
 
-                        <thead>
+                            <div class="text-center py-5">
 
-                        <tr>
+                                <i class="fa-solid fa-layer-group fa-5x text-secondary mb-3"></i>
 
-                            <th>#</th>
+                                <h4>Chưa có danh mục</h4>
 
-                            <th>Name</th>
+                                <p class="text-muted">
 
-                            <th>Action</th>
+                                    Hãy tạo danh mục đầu tiên.
 
-                        </tr>
 
-                        </thead>
+                                </p>
 
-                        <tbody>
+                            </div>
 
-                        <c:forEach items="${categoryList}"
-                                   var="category"
-                                   varStatus="status">
+                        </c:when>
 
-                            <tr>
+                        <c:otherwise>
 
-                                <td>${status.count}</td>
-                                <td>
-                                    <div class="fw-bold text-dark">${category.name}</div>
-                                </td>
-                                <td>
-                                    <button class="btn btn-warning btn-sm"
-                                            onclick="openEditModal('${category.id}',
-                                                    '${category.name}')"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#editCategoryModal">
+                            <table class="table table-hover align-middle">
 
-                                        <i class="fa-solid fa-pen"></i>
-                                    </button>
-                                        <button class="btn btn-outline-secondary btn-sm"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#deleteModal"
-                                                onclick="deleteCategory('${category.id}', '${category.name}')">
-                                            <i class="fa-solid fa-trash"></i>
-                                        </button>
+                                <thead>
 
-                                </td>
+                                <tr>
 
-                            </tr>
+                                    <th>#</th>
 
-                        </c:forEach>
+                                    <th>Name</th>
 
-                        </tbody>
+                                    <th>Action</th>
 
-                    </table>
+                                </tr>
+
+                                </thead>
+
+                                <tbody>
+
+                                <c:forEach items="${categoryList}"
+                                           var="category"
+                                           varStatus="status">
+
+                                    <tr>
+
+                                        <td>${status.count}</td>
+                                        <td>
+                                            <div class="fw-bold text-dark">${category.name}</div>
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-warning btn-sm"
+                                                    onclick="openEditModal('${category.id}',
+                                                            '${category.name}')"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#editCategoryModal">
+
+                                                <i class="fa-solid fa-pen"></i>
+                                            </button>
+                                            <button class="btn btn-outline-secondary btn-sm"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#deleteModal"
+                                                    onclick="deleteCategory('${category.id}', '${category.name}')">
+                                                <i class="fa-solid fa-trash"></i>
+                                            </button>
+
+                                        </td>
+
+                                    </tr>
+
+                                </c:forEach>
+
+                                </tbody>
+
+                            </table>
+                        </c:otherwise>
+
+                    </c:choose>
 
                 </div>
 
