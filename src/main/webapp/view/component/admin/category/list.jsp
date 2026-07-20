@@ -103,7 +103,7 @@
 
                         <c:otherwise>
 
-                            <table class="table table-hover align-middle">
+                            <table id="tableCategory" class="table table-hover align-middle datatable ">
 
                                 <thead>
 
@@ -458,7 +458,7 @@
         }
     });
 </script>
-
+<c:import url="/view/layout/libraryDataTable.jsp"/>
 </body>
 
 </html>

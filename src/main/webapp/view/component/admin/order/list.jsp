@@ -1,5 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <html>
 
@@ -77,15 +79,13 @@
 
                         <c:otherwise>
 
-                            <table class="table table-hover align-middle">
+                            <table id="tableOrder" class="table table-hover align-middle datatable">
 
                                 <thead>
 
                                 <tr>
 
                                     <th>#</th>
-
-                                    <th>Mã đơn</th>
 
                                     <th>Khách hàng</th>
 
@@ -113,17 +113,66 @@
 
                                         <td>${status.count}</td>
 
-                                        <td>${o.orderCode}</td>
+                                        <td>${o.userName}</td>
 
-                                        <td>${o.customerName}</td>
+                                        <td>${o.created}</td>
 
-                                        <td>${o.orderDate}</td>
-
-                                        <td>${o.totalAmount}</td>
+                                        <td><fmt:formatNumber value="${o.total}" maxFractionDigits="0"/> đ</td>
 
                                         <td>
 
-                                            <!-- Badge -->
+                                            <c:choose>
+
+                                                <c:when test="${o.status=='pending'}">
+
+                                                    <span class="badge bg-warning text-dark">
+
+                                                        Pending
+                                                    </span>
+
+                                                </c:when>
+
+                                                <c:when test="${o.status=='processing'}">
+
+                                                    <span class="badge bg-info">
+
+                                                        Processing
+
+                                                    </span>
+
+                                                </c:when>
+
+                                                <c:when test="${o.status=='shipping'}">
+
+                                                    <span class="badge bg-primary">
+
+                                                        Shipping
+
+                                                    </span>
+
+                                                </c:when>
+
+                                                <c:when test="${o.status=='completed'}">
+
+                                                    <span class="badge bg-success">
+
+                                                        Completed
+
+                                                    </span>
+
+                                                </c:when>
+
+                                                <c:otherwise>
+
+                                                    <span class="badge bg-danger">
+
+                                                        Cancelled
+
+                                                    </span>
+
+                                                </c:otherwise>
+
+                                            </c:choose>
 
                                         </td>
 
@@ -131,7 +180,7 @@
 
                                             <a
 
-                                                    href="/order?action=detail&id=${o.id}"
+                                                    href="/admin/order?action=detail&id=${o.id}"
 
                                                     class="btn btn-outline-primary btn-sm">
 
@@ -162,7 +211,60 @@
     </div>
 
 </div>
+<c:if test="${not empty sessionScope.message}">
 
+    <c:set var="toastClass" value="text-bg-success"/>
+    <c:if test="${fn:contains(sessionScope.message, 'failed')}">
+        <c:set var="toastClass" value="text-bg-danger"/>
+    </c:if>
+
+    <div class="toast-container position-fixed top-0 end-0 p-3">
+
+        <div id="successToast"
+             class="toast ${toastClass} border-0">
+
+            <div class="d-flex">
+
+                <div class="toast-body">
+
+                    <c:choose>
+
+                        <c:when test="${sessionScope.message == 'update_success'}">
+                            Cập nhật trạng thái thành công!
+                        </c:when>
+                        <c:when test="${sessionScope.message == 'update_failed'}">
+                            Cập nhật trạng thái thất bại!
+                        </c:when>
+                        <c:otherwise>
+                            ${sessionScope.message}
+                        </c:otherwise>
+                    </c:choose>
+
+                </div
+
+                <button
+                        type="button"
+                        class="btn-close btn-close-white me-2 m-auto"
+                        data-bs-dismiss="toast">
+                </button>
+                <c:remove var="message" scope="session"/>
+
+            </div>
+
+        </div>
+
+    </div>
+</c:if>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let toastElement = document.getElementById("successToast");
+        if (toastElement) {
+            let toast = new bootstrap.Toast(toastElement, {delay: 3000});
+            toast.show();
+        }
+    });
+</script>
+<c:import url="/view/layout/libraryDataTable.jsp"/>
 </body>
 
 </html>

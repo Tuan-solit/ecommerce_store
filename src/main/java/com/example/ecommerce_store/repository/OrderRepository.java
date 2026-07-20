@@ -1,6 +1,7 @@
 package com.example.ecommerce_store.repository;
 
 import com.example.ecommerce_store.entities.*;
+import com.example.ecommerce_store.entities.dto.OrderDTO;
 import com.example.ecommerce_store.utils.DBConnection;
 import org.eclipse.tags.shaded.org.apache.xpath.operations.Or;
 
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OrderRepository implements IOrderRepository {
+
 
     private static final String INSERT_ORDER =
             "INSERT INTO orders(user_id,total_amount,status,receiver_name,phone,address,note) VALUES(?,?,?,?,?,?,?)";
@@ -32,6 +34,85 @@ public class OrderRepository implements IOrderRepository {
             "WHERE order_id=?";
 
     private static final String FIND_ORDER_BY_ID = "SELECT * FROM orders WHERE order_id = ?";
+
+    //ADMIN
+    private static final String SELECT_ALL_ORDER = "select o.order_id,u.full_name, o.order_date, o.total_amount, o.status \n" +
+            "from orders o\n" +
+            "inner join users u\n" +
+            "on o.user_id = u.user_id\n";
+    
+    private static final String SELECT_ORDER_BY_ID = "select o.order_id,u.full_name, u.phone, o.order_date, o.total_amount, o.status \n" +
+            "from orders o\n" +
+            "join users u \n" +
+            "on o.user_id = u.user_id\n" +
+            "where order_id = ?";
+
+    private static final String UPDATE_STATUS_ORDER = "update orders set `status` = ? where (`order_id` = ?);";
+    
+    @Override
+    public List<OrderDTO> getOrderList() {
+        List<OrderDTO> orderList = new ArrayList<>();
+
+        try (Connection connection = DBConnection.getDBConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_ORDER);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+            while (resultSet.next()) {
+                int id = resultSet.getInt("order_id");
+                String name = resultSet.getString("full_name");
+                Date created = resultSet.getDate("order_date");
+                double total = resultSet.getDouble("total_amount");
+                String status = resultSet.getString("status");
+                OrderDTO orderDTO = new OrderDTO(id,name,created,total,status);
+                orderList.add(orderDTO);
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return orderList;
+    }
+
+    @Override
+    public OrderDTO getOrderById(int id) {
+        try (Connection connection = DBConnection.getDBConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ORDER_BY_ID)) {
+
+            preparedStatement.setInt(1, id);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                int orderId = resultSet.getInt("order_id");
+                String name = resultSet.getString("full_name");
+                String phone = resultSet.getString("phone");
+                Date created = resultSet.getDate("order_date");
+                double total = resultSet.getDouble("total_amount");
+                String status = resultSet.getString("status");
+                OrderDTO orderDTO = new OrderDTO(orderId,name,phone,created,total,status);
+                return orderDTO;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+
+    @Override
+    public boolean updateStatus(int id, String status) {
+        try (
+                Connection connection = DBConnection.getDBConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_STATUS_ORDER);
+        ) {
+            preparedStatement.setString(1,status);
+            preparedStatement.setInt(2,id);
+            int effectRow = preparedStatement.executeUpdate();
+            return effectRow == 1;
+        } catch (SQLException e) {
+            System.out.println("---loi ket noi DB");
+        }
+        return false;
+    }
 
     @Override
     public boolean checkout(User user, Cart cart, Order order) {

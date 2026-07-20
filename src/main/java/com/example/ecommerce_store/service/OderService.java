@@ -4,6 +4,7 @@ import com.example.ecommerce_store.entities.Cart;
 import com.example.ecommerce_store.entities.Order;
 import com.example.ecommerce_store.entities.OrderDetail;
 import com.example.ecommerce_store.entities.User;
+import com.example.ecommerce_store.entities.dto.OrderDTO;
 import com.example.ecommerce_store.repository.IOrderRepository;
 import com.example.ecommerce_store.repository.OrderRepository;
 
@@ -31,5 +32,20 @@ public class OderService implements IOderService{
     @Override
     public Order findById(int orderId) {
         return orderRepository.findById(orderId);
+    }
+
+    @Override
+    public List<OrderDTO> getOrderList() {
+        return orderRepository.getOrderList();
+    }
+
+    @Override
+    public OrderDTO getOrderById(int id) {
+        return orderRepository.getOrderById(id);
+    }
+
+    @Override
+    public boolean updateStatus(int id, String status) {
+        return orderRepository.updateStatus(id, status);
     }
 }

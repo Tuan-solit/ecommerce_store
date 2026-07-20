@@ -81,7 +81,7 @@
                     </div>
                     <c:choose>
                         <c:when test="${not empty productList}">
-                            <table class="table table-hover align-middle">
+                            <table id="tableProduct" class="table table-hover align-middle datatable">
 
                                 <thead>
 
@@ -183,7 +183,6 @@
                 </div>
 
             </div>
-            <c:import url="/view/component/pagination.jsp"/>
 
         </div>
 
@@ -294,6 +293,7 @@
         }
     }
 </script>
+<c:import url="/view/layout/libraryDataTable.jsp"/>
 
 </body>
 
