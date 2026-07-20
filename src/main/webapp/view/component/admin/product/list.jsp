@@ -79,95 +79,110 @@
                         </div>
 
                     </div>
+                    <c:choose>
+                        <c:when test="${not empty productList}">
+                            <table id="tableProduct" class="table table-hover align-middle datatable">
 
-                    <table class="table table-hover align-middle">
+                                <thead>
 
-                        <thead>
+                                <tr>
 
-                        <tr>
+                                    <th>#</th>
 
-                            <th>#</th>
+                                    <th>ID</th>
 
-                            <th>ID</th>
+                                    <th>Name</th>
 
-                            <th>Name</th>
+                                    <th>Category</th>
 
-                            <th>Category</th>
+                                    <th>Price</th>
 
-                            <th>Price</th>
+                                    <th>Created At</th>
 
-                            <th>Created At</th>
+                                    <th>Status</th>
 
-                            <th>Status</th>
+                                    <th>Action</th>
 
-                            <th>Action</th>
+                                </tr>
 
-                        </tr>
+                                </thead>
 
-                        </thead>
+                                <tbody>
+                                <c:forEach items="${productList}"
+                                           var="product"
+                                           varStatus="status">
 
-                        <tbody>
+                                    <tr>
 
-                        <c:forEach items="${productList}"
-                                   var="product"
-                                   varStatus="status">
+                                        <td>${status.count}</td>
 
-                            <tr>
+                                        <td>${product.productCode}</td>
 
-                                <td>${status.count}</td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <img src="${product.image}"
+                                                     class="product-img-thumb me-3"
+                                                     alt="${product.name}">
 
-                                <td>${product.productCode}</td>
+                                                <div>
+                                                    <div class="fw-bold text-dark">${product.name}</div>
+                                                    <small class="text-muted">(${product.quantity})</small>
+                                                </div>
+                                            </div>
+                                        </td>
 
-                                <td>
-                                    <div class="d-flex align-items-center">
-                                        <img src="${product.image}"
-                                             class="product-img-thumb me-3"
-                                             alt="${product.name}">
+                                        <td>${product.category.name}</td>
 
-                                        <div>
-                                            <div class="fw-bold text-dark">${product.name}</div>
-                                            <small class="text-muted">(${product.quantity})</small>
-                                        </div>
-                                    </div>
-                                </td>
+                                        <td><fmt:formatNumber value="${product.price}" maxFractionDigits="0"/> đ</td>
 
-                                <td>${product.category.name}</td>
+                                        <td>${product.created}</td>
 
-                                <td><fmt:formatNumber value="${product.price}" maxFractionDigits="0"/> đ</td>
+                                        <td>${product.active?"Published":"Inactive"}</td>
 
-                                <td>${product.created}</td>
+                                        <td>
 
-                                <td>${product.active?"Published":"Inactive"}</td>
+                                            <a href="/admin/product?action=edit&id=${product.id}"
+                                               class="btn btn-outline-warning btn-sm">
 
-                                <td>
+                                                <i class="fa-solid fa-pen"></i>
 
-                                    <a href="/admin/product?action=edit&id=${product.id}"
-                                       class="btn btn-outline-warning btn-sm">
+                                            </a>
+                                            <button class="btn btn-outline-secondary btn-sm"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#statusModal"
+                                                    onclick="toggleStatusProduct('${product.id}', '${product.name}', ${product.active})">
+                                                <i class="fa-solid fa-toggle-on"></i>
+                                            </button>
 
-                                        <i class="fa-solid fa-pen"></i>
+                                        </td>
 
-                                    </a>
-                                    <button class="btn btn-outline-secondary btn-sm"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#statusModal"
-                                            onclick="toggleStatusProduct('${product.id}', '${product.name}', ${product.active})">
-                                        <i class="fa-solid fa-toggle-on"></i>
-                                    </button>
+                                    </tr>
 
-                                </td>
+                                </c:forEach>
+                                </tbody>
+                            </table>
 
-                            </tr>
+                        </c:when>
 
-                        </c:forEach>
+                        <c:otherwise>
+                            <div class="text-center py-5">
 
-                        </tbody>
+                                <i class="fa-solid fa-box-open fa-5x text-secondary mb-3"></i>
 
-                    </table>
+                                <h4>Chưa có sản phẩm</h4>
+
+                                <p class="text-muted">
+
+                                    Hãy thêm sản phẩm đầu tiên.
+                                </p>
+
+                            </div>
+                        </c:otherwise>
+                    </c:choose>
 
                 </div>
 
             </div>
-            <c:import url="/view/component/pagination.jsp"/>
 
         </div>
 
@@ -175,11 +190,11 @@
 
 </div>
 <c:if test="${not empty sessionScope.toastMessage or not empty requestScope.message}">
-    <c:set var="msgValue" value="${not empty sessionScope.toastMessage}" />
+    <c:set var="msgValue" value="${not empty sessionScope.toastMessage}"/>
 
-    <c:set var="toastClass" value="text-bg-success" />
+    <c:set var="toastClass" value="text-bg-success"/>
     <c:if test="${fn:contains(msgValue, 'failed')}">
-        <c:set var="toastClass" value="text-bg-danger" />
+        <c:set var="toastClass" value="text-bg-danger"/>
     </c:if>
 
     <div class="toast-container position-fixed top-0 end-0 p-3">
@@ -234,7 +249,7 @@
             let toast = new bootstrap.Toast(
                 document.getElementById("successToast"),
                 {
-                    delay:3000
+                    delay: 3000
                 });
 
             toast.show();
@@ -278,6 +293,7 @@
         }
     }
 </script>
+<c:import url="/view/layout/libraryDataTable.jsp"/>
 
 </body>
 
